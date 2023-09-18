@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Room extends Model
+class RoomImage extends Model
 {
     use HasFactory;
-    
+
     protected $guarded = [];
 
     public function classRoom(): BelongsTo
     {
-        return $this-> belongsTo(ClassRoom::class, 'id_class_room', 'id');
+        return $this->belongsTo(ClassRoom::class, 'id_class_room', 'id');
     }
 }
