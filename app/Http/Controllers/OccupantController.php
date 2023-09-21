@@ -6,7 +6,6 @@ use App\Http\Resources\OccupantDetailResource;
 use App\Models\User;
 use App\Models\Occupant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class OccupantController extends Controller
 {
@@ -19,13 +18,21 @@ class OccupantController extends Controller
         }
 
         $request->validate([
+            'name' => 'required|string',
+            'date_birth' => 'required|date',
+            'gender' => 'required|string',
             'phone' => 'required|string',
             'address' => 'required|string',
+            'occupation' => 'required|string'
         ]);
 
         $user->occupant()->create([
+            'name' => $request->name,
+            'date_birth' => $request->date_birth,
+            'gender' => $request->gender,
             'phone' => $request->phone,
             'address' => $request->address,
+            'occupation' => $request->occupation
         ]);
 
         return response()->json(['message' => 'Berhasil'], 201);

@@ -18,12 +18,15 @@ class OccupantDetailResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'name' => $this->user->name,
+            'date_birth' => $this->date_birth,
+            'gender' => $this->gender,
             'phone' => $this->phone,
             'address' => $this->address,
-            'ktp_doc' => [
-                'original_name' => $this->ktpDoc->original_name,
-                'path' => $this->ktpDoc->path,
-            ]
+            'occupation' => $this->occupation
+            // 'ktp_doc' => [
+            //     'original_name' => $this->ktpDoc->original_name,
+            //     'path' => $this->ktpDoc->path,
+            // ]
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OcCitizenshipDoc;
 use App\Models\Occupant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,5 +27,11 @@ class OcCitizenshipDocController extends Controller
         ]);
 
         return response()->json(['message' => 'Berhasil'], 201);
+    }
+
+    public function getKtp()
+    {
+        $ktp = OcCitizenshipDoc::all();
+        return response()->json($ktp, 200);
     }
 }

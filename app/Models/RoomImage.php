@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class RoomImage extends Model
 {
     use HasFactory;
+    
+    protected $table = "class_room_images"; 
+
+    public $timestamps = false;
 
     protected $guarded = [];
 

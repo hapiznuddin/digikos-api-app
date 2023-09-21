@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('room_size', 255);
             $table->integer('room_price');
             $table->string('room_deposite', 255);
-            $table->string('room-description', 255);
+            $table->string('room_description', 255);
             $table->timestamps();
         });
     }
