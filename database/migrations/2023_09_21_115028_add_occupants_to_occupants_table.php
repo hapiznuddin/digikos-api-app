@@ -25,7 +25,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('occupants', function (Blueprint $table) {
-            //
+            $table->string('name')->after('phone');
+            $table->date('date_birth')->after('name');
+            $table->string('gender')->after('date_birth');
+            $table->string('occupation')->after('gender');
         });
     }
 };

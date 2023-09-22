@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\OcCitizenshipDocController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -24,5 +25,11 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/class-room', [ClassRoomController::class, 'getClassroom']);
     Route::post('/class-room/create', [ClassRoomController::class, 'createClassRoom']);
     Route::post('/class-room/create/images', [ClassRoomController::class, 'createImageRoom']);
+    
+    //* Route Rooms
+    Route::get('/room', [RoomController::class, 'getSelectClassroom']);
+    Route::get('/room/detail', [RoomController::class, 'getDetailClassroom']);
+    Route::post('/room/create', [RoomController::class, 'createRoom']);
+    
 
 });

@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('roles', function (Blueprint $table) {
-            //
+            $table->boolean('create_room')->after('user_approval')->default(false);
         });
     }
 };
