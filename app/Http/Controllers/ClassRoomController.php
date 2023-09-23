@@ -15,10 +15,10 @@ class ClassRoomController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'description' => 'required|string',
             'size' => 'required|string|max:255',
             'price' => 'required|integer',
-            'deposit' => 'required|string|max:255',
+            'deposit' => 'required|integer',
             'facilities_ac' => 'required|boolean',
             'facilities_meja' => 'required|boolean',
             'facilities_wifi' => 'required|boolean',
