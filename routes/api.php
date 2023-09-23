@@ -27,8 +27,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/class-room/create/images', [ClassRoomController::class, 'createImageRoom']);
     
     //* Route Rooms
-    Route::get('/room', [RoomController::class, 'getSelectClassroom']);
-    Route::get('/room/detail', [RoomController::class, 'getDetailClassroom']);
+    Route::get('/room/select-class', [RoomController::class, 'getSelectClassroom']);
+    Route::get('/room/detail-class', [RoomController::class, 'getDetailClassroom']);
+    Route::get('/room/detail', [RoomController::class, 'getRoom']);
     Route::post('/room/create', [RoomController::class, 'createRoom']);
     
 
