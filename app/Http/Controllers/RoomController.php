@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RoomDetailResource;
 use App\Models\ClassRoom;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -69,4 +70,5 @@ class RoomController extends Controller
 
 		return response()->json($rooms, 200);
 	}
+
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
 use App\Models\Facility;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,7 +37,7 @@ class ClassRoomController extends Controller
                 'kasur' => $request->facilities_kasur,
                 'km_luar' => $request->facilities_km_luar,
                 'km_dalam' => $request->facilities_km_dalam,
-                
+
             ]
         );
 
@@ -49,7 +50,7 @@ class ClassRoomController extends Controller
         ]);
 
         return response()->json([
-            'message'=> 'Berhasil'
+            'message' => 'Berhasil'
         ], 201);
     }
 
@@ -72,10 +73,35 @@ class ClassRoomController extends Controller
             'original_name' => $imageRoom->getClientOriginalName(),
             'path' => Storage::url($imageRoom->store('public')),
         ]);
-        
+
         return response()->json([
-            'message'=> 'Berhasil'
+            'message' => 'Berhasil'
         ], 201);
     }
-    
+
+    public function getDetailRoom(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $Room = $request->input('id');
+
+        $rooms = Room::where('id', $Room)->select('id', 'id_class_room', 'number_room', 'number_floor', 'room_size', 'room_price', 'status_room')
+            ->with(['classRoom:id,room_name'])
+            ->get();
+
+        $facilities = Facility::whereHas('classRoom', function ($query) use ($Room) {
+            $query->whereHas('rooms', function ($query) use ($Room) {
+                $query->where('id', $Room);
+            });
+        })->select('id', 'ac', 'meja', 'wifi', 'lemari', 'kasur', 'km_luar', 'km_dalam')->get();
+
+
+        $responseData = [
+            'rooms' => $rooms,
+            'facilities' => $facilities,
+        ];
+        return response()->json($responseData, 200);
+    }
 }
