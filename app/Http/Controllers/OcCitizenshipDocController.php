@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class OcCitizenshipDocController extends Controller
 {
-    public function uploadKtp(Request $request){
+    public function uploadKtp(Request $request)
+    {
 
         $occupant = Occupant::whereUserId(auth()->user()->id)->first();
         if (!$occupant) {
@@ -29,9 +30,15 @@ class OcCitizenshipDocController extends Controller
         return response()->json(['message' => 'Berhasil'], 201);
     }
 
-    public function getKtp()
+    public function getKtp(Request $request)
     {
-        $ktp = OcCitizenshipDoc::all();
+        $request->validate([
+            'id' => 'required|string',
+        ]);
+        $ktp = OcCitizenshipDoc::whereOccupantId($request->id)->get();
+        if (!$ktp) {
+            return response()->json(['message' => 'Data KTP tidak ditemukan'], 404);
+        }
         return response()->json($ktp, 200);
     }
 }

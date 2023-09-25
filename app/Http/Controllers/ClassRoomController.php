@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassRoom;
 use App\Models\Facility;
 use App\Models\Room;
+use App\Models\RoomImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ClassRoomController extends Controller
 {
+    // * membuat tipe kamar
     public function createClassRoom(Request $request)
     {
         $validatedData = $request->validate([
@@ -54,12 +56,14 @@ class ClassRoomController extends Controller
         ], 201);
     }
 
+    // * mengambil data tipe kamar
     public function getClassroom()
     {
         $classRoom = ClassRoom::select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')->get();
         return response()->json($classRoom->loadMissing(['facility:id,ac,meja,wifi,lemari,kasur,km_luar,km_dalam']), 200);
     }
 
+    // * membuat foto kamar
     public function createImageRoom(Request $request)
     {
         $request->validate([
@@ -79,6 +83,20 @@ class ClassRoomController extends Controller
         ], 201);
     }
 
+    // * mengambil foto kamar
+    public function getImageRoom(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|string',
+        ]);
+        $classRoom = RoomImage::whereIdClassRoom($request->id)->get();
+        if (!$classRoom) {
+            return response()->json(['message' => 'Gambar kamar tidak ditemukan'], 404);
+        }
+        return response()->json($classRoom, 200);
+    }
+
+    // * mengambil detail kamar
     public function getDetailRoom(Request $request)
     {
         $request->validate([
@@ -96,7 +114,6 @@ class ClassRoomController extends Controller
                 $query->where('id', $Room);
             });
         })->select('id', 'ac', 'meja', 'wifi', 'lemari', 'kasur', 'km_luar', 'km_dalam')->get();
-
 
         $responseData = [
             'rooms' => $rooms,

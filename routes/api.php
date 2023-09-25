@@ -12,7 +12,9 @@ use App\Http\Controllers\OccupantController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+
 Route::middleware('auth:sanctum')->group( function () {
+    Route::get('/user', [AuthController::class, 'getUser']);
     //* Route Occupants
     Route::get('/occupant', [OccupantController::class, 'getOccupantDetail']);
     Route::post('/occupant', [OccupantController::class, 'createOccupant']); 
@@ -23,8 +25,9 @@ Route::middleware('auth:sanctum')->group( function () {
 
     //* Route Class Rooms
     Route::get('/class-room', [ClassRoomController::class, 'getClassroom']);
-    Route::post('/class-room/create', [ClassRoomController::class, 'createClassRoom']);
-    Route::post('/class-room/create/images', [ClassRoomController::class, 'createImageRoom']);
+    Route::post('/class-room', [ClassRoomController::class, 'createClassRoom']);
+    Route::get('/class-room/image', [ClassRoomController::class, 'getImageRoom']);
+    Route::post('/class-room/image', [ClassRoomController::class, 'createImageRoom']);
     
     //* Route Rooms
     Route::get('/room/select-class', [RoomController::class, 'getSelectClassroom']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Jobs\RedisJob;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -60,5 +61,11 @@ class AuthController extends Controller
         'message' => 'Data sudah ada'
       ], 409);
     }
+  }
+
+  public function getUser()
+  {
+    $user = Auth::user();
+    return response()->json($user, 200);
   }
 }

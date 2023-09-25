@@ -70,5 +70,4 @@ class RoomController extends Controller
 
 		return response()->json($rooms, 200);
 	}
-
 }
