@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Occupant extends Model
 {
@@ -16,7 +17,8 @@ class Occupant extends Model
 
     protected $guarded = [];
 
-    protected static function boot() {
+    protected static function boot()
+    {
         parent::boot();
 
         static::creating(function ($model) {
@@ -44,5 +46,8 @@ class Occupant extends Model
         return $this->hasOne(OcCitizenshipDoc::class, 'occupant_id', 'id');
     }
 
-
+    public function testimonial(): HasMany
+    {
+        return $this->hasMany(Testimonial::class, 'occupants_id', 'id');
+    }
 }
