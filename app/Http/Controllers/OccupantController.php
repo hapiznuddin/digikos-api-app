@@ -40,9 +40,20 @@ class OccupantController extends Controller
 
     public function getOccupantDetail(Request $request) {
         $occupantId = (auth()->user()->role->user_management)? $request->query('occupant_id') : auth()->user()->occupant->id;
-        $occupant = Occupant::whereId($occupantId)->first();
-
-        return new OccupantDetailResource($occupant);
-
+        if ($occupantId) {
+            // Jika ada 'occupant_id' dalam parameter URL, ambil data berdasarkan ID tersebut
+            $occupant = Occupant::find($occupantId);
+    
+            if (!$occupant) {
+                return response()->json(['message' => 'Occupant not found'], 404);
+            }
+    
+            return response()->json($occupant, 200);
+        } else {
+            // Jika tidak ada 'occupant_id' dalam parameter URL, ambil semua data
+            $occupants = Occupant::all();
+    
+            return response()->json($occupants, 200);
+        }
     }
 }

@@ -16,6 +16,13 @@ class ClassRoomController extends Controller
     // * membuat tipe kamar
     public function createClassRoom(Request $request)
     {
+        $permission = auth()->user()->role->create_room;
+        if (!$permission) {
+            return response()->json([
+                'message' => 'forbidden'
+            ], 403);
+        }
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -67,6 +74,12 @@ class ClassRoomController extends Controller
     // * membuat foto kamar
     public function createImageRoom(Request $request)
     {
+        $permission = auth()->user()->role->create_room;
+        if (!$permission) {
+            return response()->json([
+                'message' => 'forbidden'
+            ], 403);
+        }
         $request->validate([
             'room_id' => 'required|string',
             'image_room' => 'required|file|mimes:png,jpg,jpeg|max:4096',

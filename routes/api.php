@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OccupantController;
+use App\Http\Controllers\TestimonialController;
 
 //* Route Auth
 Route::post('/register', [AuthController::class, 'register']);
@@ -37,5 +38,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/room', [RoomController::class, 'getRoom']);
     Route::post('/room', [RoomController::class, 'createRoom']);
     
-
+    Route::post('/testimonial', [TestimonialController::class, 'createTestimonial']);
+    
 });

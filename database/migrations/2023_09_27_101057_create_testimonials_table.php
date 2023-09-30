@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_class_room');
-            $table->foreign('id_class_room')->references('id')->on('class_rooms');
             $table->string('occupants_id');
             $table->foreign('occupants_id')->references('id')->on('occupants');
-            $table->string('name');
             $table->integer('rating');
-            $table->string('description');
+            $table->text('description');
             $table->timestamps();
         });
     }
