@@ -14,9 +14,12 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/class-room-landingpage', [ClassRoomController::class, 'getClassRoomLandingPage']);
+Route::get('/class-room-detail-landingpage', [ClassRoomController::class, 'getDetailClassroomlandingPage']);
+Route::get('/class-room/image', [ClassRoomController::class, 'getImageRoom']);
 
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('/user', [AuthController::class, 'getUser']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     //* Route Occupants
     Route::get('/occupant', [OccupantController::class, 'getOccupantDetail']);
     Route::post('/occupant', [OccupantController::class, 'createOccupant']); 
@@ -28,7 +31,6 @@ Route::middleware('auth:sanctum')->group( function () {
     //* Route Class Rooms
     Route::get('/class-room', [ClassRoomController::class, 'getClassroom']);
     Route::post('/class-room', [ClassRoomController::class, 'createClassRoom']);
-    Route::get('/class-room/image', [ClassRoomController::class, 'getImageRoom']);
     Route::post('/class-room/image', [ClassRoomController::class, 'createImageRoom']);
     
     //* Route Rooms

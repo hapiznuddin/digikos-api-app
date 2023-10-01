@@ -29,6 +29,7 @@ class AuthController extends Controller
     $token = $user->createToken('access_token')->plainTextToken;
     return response()->json([
       'token' => $token,
+      'name' => $user->name,
       'role' => $user->role->name,
     ]);
   }
@@ -61,6 +62,13 @@ class AuthController extends Controller
         'message' => 'Data sudah ada'
       ], 409);
     }
+  }
+
+  public function logout(Request $request)
+  {
+    $request->user()->tokens()->delete();
+
+    return response()->json(['message' => 'berhasil logout'], 200);
   }
 
   public function getUser()

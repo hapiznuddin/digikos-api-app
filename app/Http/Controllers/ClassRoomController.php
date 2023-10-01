@@ -143,4 +143,17 @@ class ClassRoomController extends Controller
         ->get();
         return response()->json($classrooms, 200);
     }
+
+    public function getDetailClassroomlandingPage(Request $request)
+    {
+        $request->validate([
+            'room' => 'required|integer',
+        ]);
+        $classroom = Classroom::with('facility', 'images')
+        ->where('id', $request->room)
+        ->select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')
+        ->first();
+
+    return response()->json($classroom, 200);
+    }
 }

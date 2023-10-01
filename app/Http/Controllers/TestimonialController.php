@@ -28,7 +28,6 @@ class TestimonialController extends Controller
         return response()->json([
             'message' => 'Berhasil'
         ], 201);
-
     }
 
 
