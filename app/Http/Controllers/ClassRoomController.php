@@ -147,13 +147,21 @@ class ClassRoomController extends Controller
     public function getDetailClassroomlandingPage(Request $request)
     {
         $request->validate([
-            'room' => 'required|integer',
+            'id' => 'required|integer',
         ]);
-        $classroom = Classroom::with('facility', 'images')
-        ->where('id', $request->room)
+        $classroom = Classroom::where('id', $request->id)
         ->select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')
         ->first();
 
     return response()->json($classroom, 200);
+    }
+
+    public function getFacilityLandingPage(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+        $facilities = Facility::where('id', $request->id)->select('id', 'ac', 'meja', 'wifi', 'lemari', 'kasur', 'km_luar', 'km_dalam')->first();
+        return response()->json($facilities, 200);
     }
 }

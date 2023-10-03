@@ -16,6 +16,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/class-room-landingpage', [ClassRoomController::class, 'getClassRoomLandingPage']);
 Route::get('/class-room-detail-landingpage', [ClassRoomController::class, 'getDetailClassroomlandingPage']);
 Route::get('/class-room/image', [ClassRoomController::class, 'getImageRoom']);
+Route::get('/facility-landingpage', [ClassRoomController::class, 'getFacilityLandingPage']);
 
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('/user', [AuthController::class, 'getUser']);
