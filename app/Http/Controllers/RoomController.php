@@ -70,4 +70,17 @@ class RoomController extends Controller
 
 		return response()->json($rooms, 200);
 	}
+
+	public function getNumberRoomWithFloor(Request $request)
+	{
+		$request->validate([
+			'floor' => 'required|string',
+			'id' => 'required|string',
+		]);
+		$rooms = Room::where('number_floor', $request->floor)
+			->where('id_class_room', $request->id)
+			->pluck('number_room');
+
+		return response()->json(['number_room' => $rooms], 200);
+	}
 }
