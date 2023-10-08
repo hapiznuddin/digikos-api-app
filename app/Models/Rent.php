@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Testimonial extends Model
+class Rent extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Testimonial extends Model
 
     public function occupant(): BelongsTo
     {
-        return $this->belongsTo(Occupant::class, 'occupants_id', 'id');
+        return $this->belongsTo(Occupant::class, 'occupant_id', 'id');
     }
 
     public function room(): BelongsTo
@@ -22,4 +22,8 @@ class Testimonial extends Model
         return $this->belongsTo(Room::class, 'room_id', 'id');
     }
 
+    public function statusRent(): BelongsTo
+    {
+        return $this->belongsTo(StatusRent::class, 'status_id', 'id');
+    }
 }

@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('roles', function (Blueprint $table) {
-            $table->boolean('create_room')->after('user_approval')->default(false);
-            
+        Schema::create('statistics', function (Blueprint $table) {
+            $table->id();
+            $table->integer('total_rating');
+            $table->integer('total_occupants');
+            $table->float('avg_rating');
         });
     }
 
@@ -22,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('roles', function (Blueprint $table) {
-            $table->dropColumn('create_room');
-        });
+        Schema::dropIfExists('statistics');
     }
 };

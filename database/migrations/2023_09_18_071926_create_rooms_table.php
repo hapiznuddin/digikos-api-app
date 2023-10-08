@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_class_room');
             $table->foreign('id_class_room')->references('id')->on('class_rooms')->onDelete('cascade');
-            $table->string('number_room', 255);
-            $table->string('status_room', 255);
+            $table->string('number_room', 255)->unique();
+            $table->string('status_room', 255)->nullable();
             $table->timestamps();
         });
     }

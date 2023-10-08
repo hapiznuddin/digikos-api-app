@@ -50,4 +50,14 @@ class Occupant extends Model
     {
         return $this->hasMany(Testimonial::class, 'occupants_id', 'id');
     }
+
+    public function rooms(): HasOne
+    {
+        return $this->hasOne(Room::class, 'occupants_id', 'id');
+    }
+
+    public function rent(): HasMany
+    {
+        return $this->hasMany(Rent::class, 'occupants_id', 'id');
+    }
 }

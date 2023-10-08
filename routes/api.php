@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OccupantController;
+use App\Http\Controllers\RentController;
 use App\Http\Controllers\TestimonialController;
 
 //* Route Auth
@@ -41,6 +42,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/room/detail', [ClassRoomController::class, 'getDetailRoom']);
     Route::get('/room', [RoomController::class, 'getRoom']);
     Route::post('/room', [RoomController::class, 'createRoom']);
+    
+    //* Route Rents
+    Route::post('/rent-stage-1', [RentController::class, 'createRentStage1']);
     
     Route::post('/testimonial', [TestimonialController::class, 'createTestimonial']);
     

@@ -24,9 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->string('number_floor', 255)->after('number_room');
-            $table->string('room_size', 255)->after('number_floor');
-            $table->integer('room_price')->after('room_size');
+            $table->dropColumn('number_floor');
+            $table->dropColumn('room_size');
+            $table->dropColumn('room_price');
         });
     }
 };
