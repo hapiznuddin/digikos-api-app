@@ -38,6 +38,17 @@ class OccupantController extends Controller
         return response()->json(['message' => 'Berhasil'], 201);
     }
 
+    public function updateOccupant(Request $request)
+    {
+        $occupant = Occupant::whereUserId(auth()->user()->id)->first();
+        if (!$occupant) {
+            return response()->json(['message' => 'Penghuni tidak ditemukan'], 404);
+        }
+        $occupant->update($request->all());
+
+        return response()->json(['message' => 'Occupant updated'], 201);
+    }
+
     public function getOccupantDetail(Request $request) {
         $occupantId = (auth()->user()->role->user_management)? $request->query('occupant_id') : auth()->user()->occupant->id;
         if ($occupantId) {

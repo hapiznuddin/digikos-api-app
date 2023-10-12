@@ -46,6 +46,16 @@ class Occupant extends Model
         return $this->hasOne(OcCitizenshipDoc::class, 'occupant_id', 'id');
     }
 
+    public function familyDoc(): HasOne
+    {
+        return $this->hasOne(FamilyDoc::class, 'occupant_id', 'id');
+    }
+
+    public function profilePic(): HasOne
+    {
+        return $this->hasOne(ProfilePic::class, 'occupant_id', 'id');
+    }
+
     public function testimonial(): HasMany
     {
         return $this->hasMany(Testimonial::class, 'occupants_id', 'id');

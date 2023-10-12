@@ -23,13 +23,19 @@ Route::get('/number-room', [RoomController::class, 'getNumberRoomWithFloor']);
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('/user', [AuthController::class, 'getUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    
     //* Route Occupants
     Route::get('/occupant', [OccupantController::class, 'getOccupantDetail']);
     Route::post('/occupant', [OccupantController::class, 'createOccupant']); 
+    Route::put('/occupant', [OccupantController::class, 'updateOccupant']);
 
     //* Route Occupant Files
     Route::get('/occupant/ktp-doc', [OcCitizenshipDocController::class, 'getKtp']);
     Route::post('/occupant/ktp-doc', [OcCitizenshipDocController::class, 'uploadKtp']);
+    Route::get('/occupant/family-doc', [OcCitizenshipDocController::class, 'getFamilyDoc']);
+    Route::post('/occupant/family-doc', [OcCitizenshipDocController::class, 'createFamilyDoc']);
+    Route::get('/occupant/profile-pic', [OcCitizenshipDocController::class, 'getProfilePic']);
+    Route::post('/occupant/profile-pic', [OcCitizenshipDocController::class, 'createProfilePic']);
 
     //* Route Class Rooms
     Route::get('/class-room', [ClassRoomController::class, 'getClassroom']);
