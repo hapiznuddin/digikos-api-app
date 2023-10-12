@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/occupant/family-doc', [OcCitizenshipDocController::class, 'createFamilyDoc']);
     Route::get('/occupant/profile-pic', [OcCitizenshipDocController::class, 'getProfilePic']);
     Route::post('/occupant/profile-pic', [OcCitizenshipDocController::class, 'createProfilePic']);
+    Route::post('/occupant/profile-pic/update', [OcCitizenshipDocController::class, 'updateProfilePic']);
+    // Route::post('/occupant/test', [OcCitizenshipDocController::class, 'testFile']);
 
     //* Route Class Rooms
     Route::get('/class-room', [ClassRoomController::class, 'getClassroom']);

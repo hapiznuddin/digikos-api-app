@@ -94,6 +94,35 @@ class OcCitizenshipDocController extends Controller
         return response()->json(['message' => 'Berhasil'], 201);
     }
 
+    public function updateProfilePic(Request $request)
+    {
+        $occupant = Occupant::whereUserId(auth()->user()->id)->first();
+
+        if (!$occupant) {
+            return response()->json(['message' => 'Penghuni tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'profile_pic' => 'required|file|mimes:png,jpg,jpeg|max:4096',
+        ]);
+        $currentProfilePic = $occupant->profilePic;
+
+        if ($currentProfilePic) {
+            // Hapus gambar profil yang lama dari penyimpanan
+            Storage::delete($currentProfilePic->path);
+            $currentProfilePic->delete();
+        }
+
+        $newProfilePic = $request->file('profile_pic');
+
+        // Buat data gambar profil yang baru
+        $occupant->profilePic()->create([
+            'original_name' => $newProfilePic->getClientOriginalName(),
+            'path' => Storage::url($newProfilePic->store('public')),
+        ]);
+        return response()->json(['message' => 'Profile picture updated'], 201);
+    }
+
     public function getProfilePic(Request $request)
     {
         $request->validate([
