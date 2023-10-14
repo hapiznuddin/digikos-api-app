@@ -21,7 +21,8 @@ return new class extends Migration
             $table->foreign('room_id')->references('id')->on('rooms');
             $table->date('start_date');
             $table->string('payment_term');
-            $table->integer('total_payment');
+            $table->integer('total_price');
+            $table->integer('total_payment')->nullable();
             $table->string('additional_occupant')->nullable();  
             $table->timestamps();
         });

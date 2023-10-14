@@ -15,7 +15,7 @@ class RentController extends Controller
         $request->validate([
             'start_date' => 'required',
             'payment_term' => 'required',
-            'total_payment' => 'required',
+            'total_price' => 'required',
             'number_room' => 'required',
         ]);
         
@@ -29,7 +29,7 @@ class RentController extends Controller
         $room->rent()->create([
             'start_date' => $request->start_date,
             'payment_term' => $request->payment_term,
-            'total_payment' => $request->total_payment,
+            'total_price' => $request->total_price,
             'room_id' => $room->id
         ]);
 
@@ -46,15 +46,44 @@ class RentController extends Controller
         $request->validate([
             'id' => 'required',
         ]);
-
         $rent = Rent::find($request->id);
+        if (!$rent) {
+            return response()->json(['message' => 'Rent not found'], 404);
+        }
+        $rent->load('room.classroom');
+        return new RentResource($rent);
+    }
 
+    public function updateRentStage2(Request $request)
+    {
+        $request->validate([
+            'rent_id' => 'required',
+            'occupant_id' => 'required',
+            'total_payment' => 'required',
+            'additional_occupant',
+        ]);
+
+        $status_id = 1;
+
+        $rent = Rent::find($request->rent_id);
         if (!$rent) {
             return response()->json(['message' => 'Rent not found'], 404);
         }
 
-        $rent->load('room.classroom');
+        // Update data rent untuk tahap kedua
+        $rent->update([
+        'occupant_id' => $request->occupant_id,
+        'status_id' => $status_id,
+        'total_payment' => $request->total_payment,
+        'additional_occupant' => $request->additional_occupant,
+        ]);
 
-        return new RentResource($rent);
+        return response()->json([
+            'message' => 'Berhasil',
+        ], 201);
+
+        
+
+
     }
 }

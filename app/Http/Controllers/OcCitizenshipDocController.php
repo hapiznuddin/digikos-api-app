@@ -37,7 +37,7 @@ class OcCitizenshipDocController extends Controller
         $request->validate([
             'id' => 'required|string',
         ]);
-        $ktp = OcCitizenshipDoc::whereOccupantId($request->id)->get();
+        $ktp = OcCitizenshipDoc::whereOccupantId($request->id)->first();
         if (!$ktp) {
             return response()->json(['message' => 'Data KTP tidak ditemukan'], 404);
         }
@@ -68,7 +68,7 @@ class OcCitizenshipDocController extends Controller
         $request->validate([
             'id' => 'required|string',
         ]);
-        $familyDoc = FamilyDoc::whereOccupantId($request->id)->get();
+        $familyDoc = FamilyDoc::whereOccupantId($request->id)->first();
         if (!$familyDoc) {
             return response()->json(['message' => 'File KK tidak ditemukan'], 404);
         }
@@ -128,7 +128,9 @@ class OcCitizenshipDocController extends Controller
         $request->validate([
             'id' => 'required|string',
         ]);
-        $profilePic = ProfilePic::whereOccupantId($request->id)->get();
+
+        $profilePic = ProfilePic::whereOccupantId($request->id)->first();
+        
         if (!$profilePic) {
             return response()->json(['message' => 'Profil picture tidak ditemukan'], 404);
         }

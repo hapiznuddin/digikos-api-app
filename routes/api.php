@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->group( function () {
     //* Route Rents
     Route::post('/rent-stage-1', [RentController::class, 'createRentStage1']);
     Route::get('/rent-stage-1', [RentController::class, 'getRentStage1']);
+    Route::put('/rent-stage-2', [RentController::class, 'updateRentStage2']);
     
     Route::post('/testimonial', [TestimonialController::class, 'createTestimonial']);
     

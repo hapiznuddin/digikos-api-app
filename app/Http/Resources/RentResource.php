@@ -18,7 +18,7 @@ class RentResource extends JsonResource
             'id' => $this->id,
             'start_date' => $this->start_date,
             'payment_term' => $this->payment_term,
-            'total_payment' => $this->total_payment,
+            'total_price' => $this->total_price,
             'room_id' => $this->room->id,
             'room' => [
                 'number_room' => $this->room->number_room,
@@ -27,6 +27,7 @@ class RentResource extends JsonResource
             'classroom_id' => $this->room->classroom->id,
             'classroom' => [
                 'name' => $this->room->classroom->room_name,
+                'size' => $this->room->classroom->room_size,
                 'deposit' => $this->room->classroom->room_deposite
             ],
             'image_id' => $this->room->classroom->firstImageRoom->id,
