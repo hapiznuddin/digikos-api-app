@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AllRentResource;
 use App\Http\Resources\RentResource;
 use App\Models\Rent;
 use App\Models\Room;
@@ -18,7 +19,7 @@ class RentController extends Controller
             'total_price' => 'required',
             'number_room' => 'required',
         ]);
-        
+
         $numberRoom = $request->input('number_room');
         $room = Room::where('number_room', $numberRoom)->first();
 
@@ -33,7 +34,7 @@ class RentController extends Controller
             'room_id' => $room->id
         ]);
 
-        $newRent = $room->rent()->latest()->first(); 
+        $newRent = $room->rent()->latest()->first();
 
         return response()->json([
             'message' => 'Berhasil',
@@ -72,18 +73,20 @@ class RentController extends Controller
 
         // Update data rent untuk tahap kedua
         $rent->update([
-        'occupant_id' => $request->occupant_id,
-        'status_id' => $status_id,
-        'total_payment' => $request->total_payment,
-        'additional_occupant' => $request->additional_occupant,
+            'occupant_id' => $request->occupant_id,
+            'status_id' => $status_id,
+            'total_payment' => $request->total_payment,
+            'additional_occupant' => $request->additional_occupant,
         ]);
 
         return response()->json([
             'message' => 'Berhasil',
         ], 201);
+    }
 
-        
-
-
+    public function getAllRent()
+    {
+        $rents = Rent::all();
+        return AllRentResource::collection($rents);
     }
 }
