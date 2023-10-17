@@ -123,16 +123,13 @@ class OcCitizenshipDocController extends Controller
         return response()->json(['message' => 'Profile picture updated'], 201);
     }
 
-    public function getProfilePic(Request $request)
+    public function getProfilePic()
     {
-        $request->validate([
-            'id' => 'required|string',
-        ]);
+        $user = auth()->user();
+        $profilePic = $user->occupant->profilePic;
 
-        $profilePic = ProfilePic::whereOccupantId($request->id)->first();
-        
         if (!$profilePic) {
-            return response()->json(['message' => 'Profil picture tidak ditemukan'], 404);
+            return response()->json(['message' => 'Profile picture not found'], 404);
         }
         return response()->json($profilePic, 200);
     }

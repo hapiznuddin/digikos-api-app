@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AllRentResource;
+use App\Http\Resources\HistoryRentResource;
 use App\Http\Resources\RentResource;
 use App\Models\Rent;
 use App\Models\Room;
@@ -64,7 +65,7 @@ class RentController extends Controller
             'additional_occupant',
         ]);
 
-        $status_id = 1;
+        $status_id = 2;
 
         $rent = Rent::find($request->rent_id);
         if (!$rent) {
@@ -84,9 +85,38 @@ class RentController extends Controller
         ], 201);
     }
 
+    public function approvalRent(Request $request)
+    {
+        $request->validate([
+        'rent_id' =>'required',
+        ]);
+        $rent = Rent::find($request->rent_id);
+        if (!$rent) {
+            return response()->json(['message' => 'Rent tidak ditemukan'], 404);
+        }
+        $rent->status_id = 3;
+        $rent->save();
+        return response()->json(['message' => 'Rent disetujui'], 200);
+    }
+
     public function getAllRent()
     {
         $rents = Rent::all();
         return AllRentResource::collection($rents);
+    }
+
+    public function getHistoryRent()
+    {
+        $user = auth()->user();
+        $rent = $user->occupant->rent;
+        $rent->load('room.classroom');
+        if (!$rent) {
+            return response()->json(['message' => 'Pengajuan tidak ditemukan'], 404);
+        }
+    
+        // Memuat relasi sesuai kebutuhan
+        $rent->load('room.classroom');
+
+        return HistoryRentResource::collection($rent);
     }
 }

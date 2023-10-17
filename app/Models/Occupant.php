@@ -68,6 +68,6 @@ class Occupant extends Model
 
     public function rent(): HasMany
     {
-        return $this->hasMany(Rent::class, 'occupants_id', 'id');
+        return $this->hasMany(Rent::class, 'occupant_id', 'id');
     }
 }
