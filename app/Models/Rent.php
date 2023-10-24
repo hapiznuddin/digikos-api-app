@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Rent extends Model
 {
@@ -25,5 +26,10 @@ class Rent extends Model
     public function statusRent(): BelongsTo
     {
         return $this->belongsTo(StatusRent::class, 'status_id', 'id');
+    }
+
+    public function payment(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'rent_id', 'id');
     }
 }

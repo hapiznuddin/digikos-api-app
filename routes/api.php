@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\OcCitizenshipDocController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/rent-history', [RentController::class, 'getHistoryRent']);
     
     Route::post('/rent-approval', [RentController::class, 'approvalRent']);
+    
+    
+    Route::post('/first-payment', [PaymentController::class, 'createPayment']);
+    Route::post('/webhook-payment', [PaymentController::class, 'webhookPayment']);
     
     
     Route::post('/testimonial', [TestimonialController::class, 'createTestimonial']);
