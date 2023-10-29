@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
+    public function profilePic(): HasOne
+    {
+        return $this->hasOne(ProfilePic::class, 'user_id', 'id');
+    }
+
     protected static function boot() {
         parent::boot();
 

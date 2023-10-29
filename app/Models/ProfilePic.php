@@ -13,8 +13,8 @@ class ProfilePic extends Model
 
     public $guarded = [];
 
-    public function occupant(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Occupant::class, 'occupant_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

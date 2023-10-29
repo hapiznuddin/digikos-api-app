@@ -16,6 +16,7 @@ class AllRentResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'price' => $this->total_price,
             'occupant_id' => $this->occupant->id,
             'name' => $this->occupant->name,
             'room_id' => $this->room->id,

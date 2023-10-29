@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('profile_pics', function (Blueprint $table) {
             $table->id();
-            $table->string('occupant_id', 255);
-            $table->foreign('occupant_id')->references('id')->on('occupants')->onDelete('cascade');
+            $table->string('user_id', 255);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('original_name', 255);
             $table->string('path', 255);
         });

@@ -6,6 +6,7 @@ use App\Models\FamilyDoc;
 use App\Models\OcCitizenshipDoc;
 use App\Models\Occupant;
 use App\Models\ProfilePic;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -79,15 +80,15 @@ class OcCitizenshipDocController extends Controller
     // * Upload Profile Picture
     public function createProfilePic(Request $request)
     {
-        $occupant = Occupant::whereUserId(auth()->user()->id)->first();
-        if (!$occupant) {
-            return response()->json(['message' => 'Penghuni tidak ditemukan'], 404);
+        $user = User::whereId(auth()->user()->id)->first();
+        if (!$user) {
+            return response()->json(['message' => 'User tidak ditemukan'], 404);
         }
         $request->validate([
             'profile_pic' => 'required|file|mimes:png,jpg,jpeg|max:4096',
         ]);
         $profilePic = $request->file('profile_pic');
-        $occupant->profilePic()->create([
+        $user->profilePic()->create([
             'original_name' => $profilePic->getClientOriginalName(),
             'path' => Storage::url($profilePic->store('public')),
         ]);
@@ -96,16 +97,16 @@ class OcCitizenshipDocController extends Controller
 
     public function updateProfilePic(Request $request)
     {
-        $occupant = Occupant::whereUserId(auth()->user()->id)->first();
+        $user = User::whereId(auth()->user()->id)->first();
 
-        if (!$occupant) {
-            return response()->json(['message' => 'Penghuni tidak ditemukan'], 404);
+        if (!$user) {
+            return response()->json(['message' => 'User tidak ditemukan'], 404);
         }
 
         $request->validate([
             'profile_pic' => 'required|file|mimes:png,jpg,jpeg|max:4096',
         ]);
-        $currentProfilePic = $occupant->profilePic;
+        $currentProfilePic = $user->profilePic;
 
         if ($currentProfilePic) {
             // Hapus gambar profil yang lama dari penyimpanan
@@ -116,7 +117,7 @@ class OcCitizenshipDocController extends Controller
         $newProfilePic = $request->file('profile_pic');
 
         // Buat data gambar profil yang baru
-        $occupant->profilePic()->create([
+        $user->profilePic()->create([
             'original_name' => $newProfilePic->getClientOriginalName(),
             'path' => Storage::url($newProfilePic->store('public')),
         ]);
@@ -126,7 +127,7 @@ class OcCitizenshipDocController extends Controller
     public function getProfilePic()
     {
         $user = auth()->user();
-        $profilePic = $user->occupant->profilePic;
+        $profilePic = $user->profilePic;
 
         if (!$profilePic) {
             return response()->json(['message' => 'Profile picture not found'], 404);
