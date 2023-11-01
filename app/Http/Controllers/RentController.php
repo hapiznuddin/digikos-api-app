@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AllRentResource;
+use App\Http\Resources\DetailRentResource;
 use App\Http\Resources\HistoryRentResource;
 use App\Http\Resources\RentResource;
 use App\Models\Rent;
@@ -88,7 +89,7 @@ class RentController extends Controller
     public function approvalRent(Request $request)
     {
         $request->validate([
-        'rent_id' =>'required',
+            'rent_id' => 'required',
         ]);
         $rent = Rent::find($request->rent_id);
         if (!$rent) {
@@ -99,9 +100,35 @@ class RentController extends Controller
         return response()->json(['message' => 'Rent disetujui'], 200);
     }
 
-    public function getAllRent()
+    public function approvalCheckIn(Request $request)
     {
-        $rents = Rent::all();
+        $request->validate([
+            'rent_id' => 'required',
+        ]);
+        $rent = Rent::find($request->rent_id);
+        if (!$rent) {
+            return response()->json(['message' => 'Rent tidak ditemukan'], 404);
+        }
+        $rent->status_id = 5;
+        $rent->save();
+        return response()->json(['message' => 'Berhasil Check In'], 200);
+    }
+
+    public function getAllRent(Request $request)
+    {
+        // Menerima parameter status_id dari URL jika ada
+        $statusId = $request->input('status_id', null);
+
+        // Buat query awal untuk Rent
+        $query = Rent::query();
+
+        // Jika status_id disediakan, tambahkan klausa where untuk filter
+        if ($statusId !== null) {
+            $query->whereIn('status_id', explode(',', $statusId)); // Jika Anda ingin mengizinkan beberapa status_id dipisahkan oleh koma
+        }
+
+        // Ambil data sesuai dengan filter
+        $rents = $query->get();
         return AllRentResource::collection($rents);
     }
 
@@ -113,10 +140,24 @@ class RentController extends Controller
         if (!$rent) {
             return response()->json(['message' => 'Pengajuan tidak ditemukan'], 404);
         }
-    
+
         // Memuat relasi sesuai kebutuhan
         $rent->load('room.classroom');
 
         return HistoryRentResource::collection($rent);
+    }
+
+    public function getDetailRent(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $rent = Rent::find($request->id);
+        if (!$rent) {
+            return response()->json(['message' => 'Rent not found'], 404);
+        }
+        $rent->load('room.classroom');
+        return new DetailRentResource($rent);
     }
 }
