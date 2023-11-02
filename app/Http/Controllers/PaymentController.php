@@ -93,14 +93,14 @@ class PaymentController extends Controller
 
         if ($response->transaction_status === 'capture') {
             $payment->update([
-                'status' => 'capture',
+                'status' => 'Lunas',
             ]);
             $payment->rent->update([
                 'status_id' => 4,
             ]);
         } else if ($response->transaction_status === 'settlement') {
             $payment->update([
-                'status' => 'settlement',
+                'status' => 'Lunas',
             ]);
             $payment->rent->update([
                 'status_id' => 4,
@@ -123,5 +123,18 @@ class PaymentController extends Controller
         Log::error('Webhook error: ' . $e->getMessage());
         return response()->json('Terjadi kesalahan internal', 500);
     }
+    }
+
+    public function getHistoryPayment(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $payment = Payment::where('occupant_id', $request->id)->get();
+        if ($payment->isEmpty()) {
+            return response()->json(['message' => 'Payment not found'], 404);
+        }
+        return response()->json($payment, 200);
     }
 }

@@ -63,9 +63,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/rent-approval/admin', [RentController::class, 'approvalRent']);
     Route::post('/rent-approval/check-in', [RentController::class, 'approvalCheckIn']);
     
-    
+    //* Route Payments
     Route::post('/first-payment', [PaymentController::class, 'createPayment']);
     Route::post('/webhook-payment', [PaymentController::class, 'webhookPayment']);
+    Route::get('/payment-history', [PaymentController::class, 'getHistoryPayment']);
     
     
     Route::post('/testimonial', [TestimonialController::class, 'createTestimonial']);

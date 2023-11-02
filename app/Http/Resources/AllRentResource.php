@@ -19,6 +19,9 @@ class AllRentResource extends JsonResource
             'price' => $this->total_price,
             'occupant_id' => $this->occupant->id,
             'name' => $this->occupant->name,
+            'phone' => $this->occupant->phone,
+            'address' => $this->occupant->address,
+            'start_date' => $this->start_date,
             'room_id' => $this->room->id,
             'room' => [
                 'number_room' => $this->room->number_room,
