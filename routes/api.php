@@ -42,8 +42,11 @@ Route::middleware('auth:sanctum')->group( function () {
 
     //* Route Class Rooms
     Route::get('/class-room', [ClassRoomController::class, 'getClassroom']);
+    Route::get('/class-room/detail', [ClassRoomController::class, 'getDetailClassroom']);
     Route::post('/class-room', [ClassRoomController::class, 'createClassRoom']);
     Route::post('/class-room/image', [ClassRoomController::class, 'createImageRoom']);
+    Route::post('/class-room/image/update', [ClassRoomController::class, 'updateImageRoom']);
+    Route::delete('/class-room/image', [ClassRoomController::class, 'deleteImageRoom']);
     
     //* Route Rooms
     Route::get('/room/select-class', [RoomController::class, 'getSelectClassroom']);

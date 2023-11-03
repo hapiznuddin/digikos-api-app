@@ -71,6 +71,28 @@ class ClassRoomController extends Controller
         return response()->json($classRoom->loadMissing(['facility:id,ac,meja,wifi,lemari,kasur,km_luar,km_dalam']), 200);
     }
 
+    // * mengambil detail data tipe kamar
+    public function getDetailClassroom(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|string',
+        ]);
+
+        $classroom = ClassRoom::where('id', $request->id)
+            ->select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')
+            ->first();
+
+        $classroomImages = RoomImage::where('id_class_room', $classroom->id)->get();
+        $facility = Facility::where('id', $classroom->id_facility)->get();
+
+        return response()->json([
+            'classroom' => $classroom,
+            'images' => $classroomImages,
+            'facility' => $facility
+        ], 200);
+    }
+
+
     // * membuat foto kamar
     public function createImageRoom(Request $request)
     {
@@ -110,6 +132,55 @@ class ClassRoomController extends Controller
         return response()->json($classRoom, 200);
     }
 
+    // * mengedit foto kamar
+    public function updateImageRoom(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|string',
+            'room_id' => 'required|string',
+            'image_room' => 'required|file|mimes:png,jpg,jpeg|max:4096',
+        ]);
+
+        $currentImages = RoomImage::whereId($request->id)->first();
+
+        if ($currentImages) {
+            Storage::delete(str_replace('storage', 'public', $currentImages->path));
+            $currentImages->delete();
+        }
+        $imageRoom = $request->file('image_room');
+        $newImage = new RoomImage([
+            'original_name' => $imageRoom->getClientOriginalName(),
+            'path' => Storage::url($imageRoom->store('public')),
+            'id_class_room' => $request->room_id, // Masukkan room_id
+        ]);
+        
+        $newImage->save();
+
+        return response()->json([
+            'message' => 'Berhasil'
+        ], 200);
+    }
+
+    // * menghapus foto kamar
+    public function deleteImageRoom(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $image = RoomImage::find($request->id);
+        if (!$image) {
+            return response()->json(['message' => 'Foto kamar tidak ditemukan'], 404);
+        }
+
+        Storage::delete(str_replace('storage', 'public', $image->path));
+        $image->delete();
+
+        return response()->json([
+            'message' => 'Foto kamar berhasil dihapus'
+        ], 200);
+    }
+
     // * mengambil detail kamar
     public function getDetailRoom(Request $request)
     {
@@ -139,8 +210,8 @@ class ClassRoomController extends Controller
     public function getClassRoomLandingPage()
     {
         $classrooms = Classroom::select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')
-        ->with('firstImageRoom') // Memuat ImageRoom untuk setiap Classroom
-        ->get();
+            ->with('firstImageRoom') // Memuat ImageRoom untuk setiap Classroom
+            ->get();
         return response()->json($classrooms, 200);
     }
 
@@ -150,10 +221,10 @@ class ClassRoomController extends Controller
             'id' => 'required|integer',
         ]);
         $classroom = Classroom::where('id', $request->id)
-        ->select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')
-        ->first();
+            ->select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')
+            ->first();
 
-    return response()->json($classroom, 200);
+        return response()->json($classroom, 200);
     }
 
     public function getFacilityLandingPage(Request $request)
