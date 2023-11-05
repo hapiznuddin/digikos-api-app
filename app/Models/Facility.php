@@ -10,6 +10,8 @@ class Facility extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $guarded = [];
 
     public function classRoom(): HasMany

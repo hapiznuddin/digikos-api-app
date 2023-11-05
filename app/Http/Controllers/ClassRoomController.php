@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ClassRoomLandingPagelResource;
 use App\Models\ClassRoom;
 use App\Models\Facility;
 use App\Models\Room;
@@ -64,11 +63,132 @@ class ClassRoomController extends Controller
         ], 201);
     }
 
+    // * Edit tipe kamar
+    public function updateClassRoom(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+            'name' => 'string|max:255',
+            'description' => 'string',
+            'size' => 'string|max:255',
+            'price' => 'integer',
+            'deposit' => 'integer',
+            'facilities_ac' => 'boolean',
+            'facilities_meja' => 'boolean',
+            'facilities_wifi' => 'boolean',
+            'facilities_lemari' => 'boolean',
+            'facilities_kasur' => 'boolean',
+            'facilities_km_luar' => 'boolean',
+            'facilities_km_dalam' => 'boolean',
+        ]);
+
+        $classRoom = ClassRoom::find($request->id);
+
+        $facility = ClassRoom::find($request->id)->facility;
+
+        // * update fasilitas
+        if (!is_null($request->facilities_ac)) {
+            $facility->update([
+                'ac' => $request->facilities_ac,
+            ]);
+        }
+
+        if (!is_null($request->facilities_meja)) {
+            $facility->update([
+                'meja' => $request->facilities_meja,
+            ]);
+        }
+
+        if (!is_null($request->facilities_wifi)) {
+            $facility->update([
+                'wifi' => $request->facilities_wifi,
+            ]);
+        }
+
+        if (!is_null($request->facilities_lemari)) {
+            $facility->update([
+                'lemari' => $request->facilities_lemari,
+            ]);
+        }
+
+        if (!is_null($request->facilities_kasur)) {
+            $facility->update([
+                'kasur' => $request->facilities_kasur,
+            ]);
+        }
+
+        if (!is_null($request->facilities_km_luar)) {
+            $facility->update([
+                'km_luar' => $request->facilities_km_luar,
+            ]);
+        }
+
+        if (!is_null($request->facilities_km_dalam)) {
+            $facility->update([
+                'km_dalam' => $request->facilities_km_dalam,
+            ]);
+        }
+
+        // * update data kamar
+        if (!is_null($request->name)) {
+            $classRoom->update([
+                'room_name' => $request->name,
+            ]);
+        }
+
+        if (!is_null($request->size)) {
+            $classRoom->update([
+                'room_size' => $request->size,
+            ]);
+        }
+
+        if (!is_null($request->description)) {
+            $classRoom->update([
+                'room_description' => $request->description,
+            ]);
+        }
+
+        if (!is_null($request->price)) {
+            $classRoom->update([
+                'room_price' => $request->price,
+            ]);
+        }
+
+        if (!is_null($request->deposit)) {
+            $classRoom->update([
+                'room_deposite' => $request->deposit,
+            ]);
+        }
+        return response()->json([
+            'message' => 'Update successful'
+        ], 200);
+    }
+
+    // * hapus tipe kamar
+    public function deleteClassRoom(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $classRoom = ClassRoom::find($request->id);
+        $facility = ClassRoom::find($request->id)->facility;
+
+        if (!$classRoom) {
+            return response()->json(['message' => 'Tipe kamar tidak ditemukan'], 404);
+        }
+        $classRoom->delete();
+        $facility->delete();
+        return response()->json([
+            'message' => 'Tipe kamar berhasil dihapus'
+        ], 200);
+    }
+
     // * mengambil data tipe kamar
     public function getClassroom()
     {
         $classRoom = ClassRoom::select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')->get();
-        return response()->json($classRoom->loadMissing(['facility:id,ac,meja,wifi,lemari,kasur,km_luar,km_dalam']), 200);
+        return response()->json($classRoom->loadMissing('facility:id,ac,meja,wifi,lemari,kasur,km_luar,km_dalam'), 200);
     }
 
     // * mengambil detail data tipe kamar
@@ -153,7 +273,7 @@ class ClassRoomController extends Controller
             'path' => Storage::url($imageRoom->store('public')),
             'id_class_room' => $request->room_id, // Masukkan room_id
         ]);
-        
+
         $newImage->save();
 
         return response()->json([
