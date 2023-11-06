@@ -38,7 +38,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/occupant/profile-pic', [OcCitizenshipDocController::class, 'getProfilePic']);
     Route::post('/occupant/profile-pic', [OcCitizenshipDocController::class, 'createProfilePic']);
     Route::post('/occupant/profile-pic/update', [OcCitizenshipDocController::class, 'updateProfilePic']);
-    // Route::post('/occupant/test', [OcCitizenshipDocController::class, 'testFile']);
 
     //* Route Class Rooms
     Route::get('/class-room', [ClassRoomController::class, 'getClassroom']);
@@ -54,8 +53,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/room/select-class', [RoomController::class, 'getSelectClassroom']);
     Route::get('/room/detail-class', [RoomController::class, 'getDetailClassroom']);
     Route::get('/room/detail', [ClassRoomController::class, 'getDetailRoom']);
-    Route::get('/room', [RoomController::class, 'getRoom']);
     Route::post('/room', [RoomController::class, 'createRoom']);
+    Route::get('/room', [RoomController::class, 'getAllRoomsByFloorAndFilterName']);
+
     
     //* Route Rents
     Route::post('/rent-stage-1', [RentController::class, 'createRentStage1']);

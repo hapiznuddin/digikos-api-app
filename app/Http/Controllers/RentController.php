@@ -109,8 +109,12 @@ class RentController extends Controller
         if (!$rent) {
             return response()->json(['message' => 'Rent tidak ditemukan'], 404);
         }
-        $rent->status_id = 5;
-        $rent->save();
+        $room = $rent->room;
+        $room->status_room = 'Terisi'; // Perbarui status kamar
+        $room->save(); // Simpan perubahan status kamar
+    
+        $rent->status_id = 5; // Perbarui status sewa
+        $rent->save(); 
         return response()->json(['message' => 'Berhasil Check In'], 200);
     }
 
