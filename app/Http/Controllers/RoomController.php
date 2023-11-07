@@ -16,15 +16,18 @@ class RoomController extends Controller
 		return response()->json($classRoom, 200);
 	}
 
-	public function getDetailClassroom()
+	public function getDetailClassroom(Request $request)
 	{
-		$classRoom = ClassRoom::whereId(request('id'))->first();
-		if (!$classRoom) {
-			return response()->json(['message' => 'Tipe Kamar tidak ditemukan'], 404);
-		}
+		$request->validate([
+			'id' => 'required|string',
+	]);
+	$classRoom = ClassRoom::select('id', 'room_size', 'room_price')->find($request->id);
 
-		$classRoom = ClassRoom::select('id', 'room_size', 'room_price')->get();
-		return response()->json($classRoom, 200);
+	if (!$classRoom) {
+			return response()->json(['message' => 'Tipe Kamar tidak ditemukan'], 404);
+	}
+
+	return response()->json($classRoom, 200);
 	}
 
 	public function createRoom(Request $request)
@@ -95,6 +98,20 @@ class RoomController extends Controller
         ->paginate(3);
 
 		return response()->json($rooms, 200);
+	}
+
+	// * Delete Room
+	public function deleteRoom(Request $request)
+	{
+		$request->validate([
+			'id' => 'required|integer', 
+		]);
+		$room = Room::find($request->id);
+		if (!$room) {
+			return response()->json(['message' => 'Kamar tidak ditemukan'], 404);
+		}
+		$room->delete();
+		return response()->json(['message'=> 'Berhasil'],200);
 	}
 
 }

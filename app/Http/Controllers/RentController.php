@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AllRentResource;
 use App\Http\Resources\DetailRentResource;
+use App\Http\Resources\GetRentHistoryByRoomIdResource;
 use App\Http\Resources\HistoryRentResource;
 use App\Http\Resources\RentResource;
 use App\Models\Rent;
@@ -57,6 +58,7 @@ class RentController extends Controller
         return new RentResource($rent);
     }
 
+
     public function updateRentStage2(Request $request)
     {
         $request->validate([
@@ -86,6 +88,7 @@ class RentController extends Controller
         ], 201);
     }
 
+
     public function approvalRent(Request $request)
     {
         $request->validate([
@@ -99,6 +102,7 @@ class RentController extends Controller
         $rent->save();
         return response()->json(['message' => 'Rent disetujui'], 200);
     }
+
 
     public function approvalCheckIn(Request $request)
     {
@@ -115,8 +119,10 @@ class RentController extends Controller
     
         $rent->status_id = 5; // Perbarui status sewa
         $rent->save(); 
+
         return response()->json(['message' => 'Berhasil Check In'], 200);
     }
+
 
     public function getAllRent(Request $request)
     {
@@ -136,6 +142,7 @@ class RentController extends Controller
         return AllRentResource::collection($rents);
     }
 
+
     public function getHistoryRent()
     {
         $user = auth()->user();
@@ -144,12 +151,12 @@ class RentController extends Controller
         if (!$rent) {
             return response()->json(['message' => 'Pengajuan tidak ditemukan'], 404);
         }
-
         // Memuat relasi sesuai kebutuhan
         $rent->load('room.classroom');
 
         return HistoryRentResource::collection($rent);
     }
+
 
     public function getDetailRent(Request $request)
     {
@@ -163,5 +170,25 @@ class RentController extends Controller
         }
         $rent->load('room.classroom');
         return new DetailRentResource($rent);
+    }
+
+
+    public function getRentHistoryByRoomId(Request $request)
+    {
+        $request->validate([
+            'room_id' => 'required|integer',
+        ]);
+    
+        $rent = Rent::where('room_id', $request->room_id)->first();
+        if (!$rent) {
+            return response()->json(['message' => 'Rent not found'], 404);
+        }
+    
+        $occupant = $rent->occupant;
+        if (!$occupant) {
+            return response()->json(['message' => 'Occupant not found'], 404);
+        }
+    
+        return GetRentHistoryByRoomIdResource::collection($occupant->rent);
     }
 }
