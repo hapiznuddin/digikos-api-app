@@ -188,7 +188,11 @@ class RentController extends Controller
         if (!$occupant) {
             return response()->json(['message' => 'Occupant not found'], 404);
         }
+
+        $filteredRent = $occupant->rent->filter(function ($item) {
+            return $item->status_id == 5;
+        });
     
-        return GetRentHistoryByRoomIdResource::collection($occupant->rent);
+        return GetRentHistoryByRoomIdResource::collection($filteredRent);
     }
 }

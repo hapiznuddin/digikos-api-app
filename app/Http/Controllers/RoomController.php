@@ -82,7 +82,9 @@ class RoomController extends Controller
 		]);
 
 		$floor = $request->input('floor');
-    $id = $request->input('id', null); // Mengambil 'id' dari permintaan atau set ke null jika tidak ada.
+    $id = $request->input('id', null);
+		$status = $request->input('status', null); 
+		$search = $request->input('search', null);
 
     $rooms = Room::where('number_floor', $floor);
 
@@ -94,8 +96,29 @@ class RoomController extends Controller
         $rooms->where('id_class_room', $classRoom->id);
     }
 
+		if (!is_null($status)) {
+			$rooms->where('status_room', $status);
+			if (!$status) {
+				return response()->json(['message' => 'Status Kamar tidak ditemukan'], 404);
+			}
+			$rooms->where('status_room', $status);
+		}
+
+		if (!is_null($search)) {
+			$rooms->where(function ($query) use ($search) {
+				$query->where('number_room', 'like', '%' . $search . '%')
+					->orWhere('number_floor', 'like', '%' . $search . '%')
+					->orWhere('room_size', 'like', '%' . $search . '%')
+					->orWhere('status_room', 'like', '%' . $search . '%')
+					->orWhere('room_price', 'like', '%' . $search . '%')
+					->orWhereHas('classRoom', function ($classRoomQuery) use ($search) {
+						$classRoomQuery->where('room_name', 'like', '%' . $search . '%');
+					});
+			});
+		}
+
 		$rooms = $rooms-> select('id', 'number_room', 'number_floor', 'room_size', 'room_price', 'status_room', 'id_class_room')->with(['classRoom:id,room_name'])
-        ->paginate(3);
+        ->paginate(10);
 
 		return response()->json($rooms, 200);
 	}
@@ -111,6 +134,48 @@ class RoomController extends Controller
 			return response()->json(['message' => 'Kamar tidak ditemukan'], 404);
 		}
 		$room->delete();
+		return response()->json(['message'=> 'Berhasil'],200);
+	}
+
+	// * Update Room
+	public function updateRoom(Request $request)
+	{
+		$request->validate([
+			'id' => 'integer',
+			'class_room_id' => 'integer',
+			'number_room' => 'string',
+			'number_floor' => 'string',
+			'room_size' => 'string',
+			'room_price' => 'integer',
+		]);
+
+		$room = Room::find($request->id);
+
+		if (!$room) {
+			return response()->json(['message' => 'Kamar tidak ditemukan'], 404);
+		}
+		$updates = [];
+
+    // Periksa setiap bidang dan tambahkan ke $updates jika tersedia dalam permintaan
+    if ($request->has('class_room_id')) {
+        $updates['id_class_room'] = $request->class_room_id;
+    }
+    if ($request->has('number_room')) {
+        $updates['number_room'] = $request->number_room;
+    }
+    if ($request->has('number_floor')) {
+        $updates['number_floor'] = $request->number_floor;
+    }
+    if ($request->has('room_size')) {
+        $updates['room_size'] = $request->room_size;
+    }
+    if ($request->has('room_price')) {
+        $updates['room_price'] = $request->room_price;
+    }
+
+    // Lakukan pembaruan hanya pada bidang yang ada dalam $updates
+    $room->update($updates);
+
 		return response()->json(['message'=> 'Berhasil'],200);
 	}
 

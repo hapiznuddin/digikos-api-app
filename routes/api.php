@@ -55,6 +55,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/room/detail', [ClassRoomController::class, 'getDetailRoom']);
     Route::post('/room', [RoomController::class, 'createRoom']);
     Route::get('/room', [RoomController::class, 'getAllRoomsByFloorAndFilterName']);
+    Route::put('/room', [RoomController::class, 'updateRoom']);
+    Route::delete('/room', [RoomController::class, 'deleteRoom']);
 
     
     //* Route Rents
