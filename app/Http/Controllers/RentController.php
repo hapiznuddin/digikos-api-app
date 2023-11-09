@@ -195,4 +195,22 @@ class RentController extends Controller
     
         return GetRentHistoryByRoomIdResource::collection($filteredRent);
     }
+
+    public function getRentByUserId(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|string',
+        ]);
+        $rent = Rent::whereHas('occupant', function ($query) use ($request) {
+            $query->where('user_id', $request->user_id);
+        })->first();
+        if (!$rent) {
+            return response()->json(['message' => 'Rent not found'], 404);
+        }
+        
+        $rentId = $rent->id;
+        $roomName = $rent->room->classRoom->room_name;
+    
+        return response()->json(['id' => $rentId, 'room_name' => $roomName], 200);
+    }
 }

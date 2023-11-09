@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
-            $table->string('occupants_id');
-            $table->foreign('occupants_id')->references('id')->on('occupants');
+            $table->unsignedBigInteger('rent_id');
+            $table->foreign('rent_id')->references('id')->on('rents')->onDelete('cascade');
+            $table->string('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->text('review');
             $table->integer('rating');
-            $table->text('description');
             $table->timestamps();
         });
     }

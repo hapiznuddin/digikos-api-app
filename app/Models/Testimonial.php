@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Testimonial extends Model
 {
@@ -12,14 +13,14 @@ class Testimonial extends Model
 
     protected $guarded = [];
 
-    public function occupant(): BelongsTo
+    public function user():BelongsTo
     {
-        return $this->belongsTo(Occupant::class, 'occupants_id', 'id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function room(): BelongsTo
+    public function rent():BelongsTo
     {
-        return $this->belongsTo(Room::class, 'room_id', 'id');
+        return $this->belongsTo(Rent::class, 'rent_id');
     }
 
 }

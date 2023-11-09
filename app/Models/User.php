@@ -73,6 +73,11 @@ class User extends Authenticatable
         return $this->hasOne(ProfilePic::class, 'user_id', 'id');
     }
 
+    public function testimonial(): HasOne
+    {
+        return $this->hasOne(Testimonial::class, 'user_id', 'id');
+    }
+
     protected static function boot() {
         parent::boot();
 

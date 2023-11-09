@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OccupantController;
 use App\Http\Controllers\RentController;
+use App\Http\Controllers\StatisticReviewController;
 use App\Http\Controllers\TestimonialController;
 
 //* Route Auth
@@ -20,6 +21,8 @@ Route::get('/class-room-detail-landingpage', [ClassRoomController::class, 'getDe
 Route::get('/class-room/image', [ClassRoomController::class, 'getImageRoom']);
 Route::get('/facility-landingpage', [ClassRoomController::class, 'getFacilityLandingPage']);
 Route::get('/number-room', [RoomController::class, 'getNumberRoomWithFloor']);
+Route::get('/testimonial', [TestimonialController::class, 'getTestimonial']);
+Route::get('/statistic-by-classroom', [StatisticReviewController::class, 'getStatisticReviewByClassRoomId']);
 
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('/user', [AuthController::class, 'getUser']);
@@ -67,6 +70,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/rent-history', [RentController::class, 'getHistoryRent']);
     Route::get('/rent/detail', [RentController::class,'getDetailRent']);
     Route::get('/rent-history-roomid', [RentController::class, 'getRentHistoryByRoomId']);
+    Route::get('/rentByUserId', [RentController::class, 'getRentByUserId']);
+
     
     Route::post('/rent-approval/admin', [RentController::class, 'approvalRent']);
     Route::post('/rent-approval/check-in', [RentController::class, 'approvalCheckIn']);
@@ -78,5 +83,6 @@ Route::middleware('auth:sanctum')->group( function () {
     
     
     Route::post('/testimonial', [TestimonialController::class, 'createTestimonial']);
+
     
 });

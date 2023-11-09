@@ -32,4 +32,9 @@ class Rent extends Model
     {
         return $this->hasMany(Payment::class, 'rent_id', 'id');
     }
+
+    public function testimonial(): HasMany
+    {
+        return $this->hasMany(Testimonial::class, 'rent_id', 'id');
+    }
 }
