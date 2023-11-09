@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GetTestimonialByIdClassResource;
+use App\Http\Resources\GetTestimonialRandomResource;
 use App\Models\Rent;
 use App\Models\StatisticReview;
 use App\Models\Testimonial;
@@ -72,5 +73,11 @@ class TestimonialController extends Controller
     return response()->json([
         'message' => 'Testimonial not found',
     ], 404);
+    }
+
+    public function getTestimonialRandom()
+    {
+        $testimonials = Testimonial::inRandomOrder()->take(5)->get();
+        return GetTestimonialRandomResource::collection($testimonials);
     }
 }

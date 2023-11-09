@@ -38,4 +38,9 @@ class ClassRoom extends Model
     {
         return $this->hasMany(Testimonial::class, 'id_class_room', 'id');
     }
+
+    public function statisticReview(): HasOne
+    {
+        return $this->hasOne(StatisticReview::class, 'id_class_room', 'id');
+    }
 }

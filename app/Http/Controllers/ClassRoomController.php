@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AllClassRoomLandingPageResource;
 use App\Models\ClassRoom;
 use App\Models\Facility;
 use App\Models\Room;
@@ -329,10 +330,8 @@ class ClassRoomController extends Controller
 
     public function getClassRoomLandingPage()
     {
-        $classrooms = Classroom::select('id', 'id_facility', 'room_name', 'room_description', 'room_size', 'room_price', 'room_deposite')
-            ->with('firstImageRoom') // Memuat ImageRoom untuk setiap Classroom
-            ->get();
-        return response()->json($classrooms, 200);
+        $classrooms = Classroom::get();
+        return AllClassRoomLandingPageResource::collection($classrooms);
     }
 
     public function getDetailClassroomlandingPage(Request $request)

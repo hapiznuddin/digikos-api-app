@@ -12,4 +12,8 @@ class StatisticReview extends Model
 
     protected $guarded = [];
     
+    public function classRoom(): BelongsTo
+    {
+        return $this->belongsTo(ClassRoom::class, 'id_class_room', 'id');
+    }
 }

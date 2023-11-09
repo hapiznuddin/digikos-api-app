@@ -22,6 +22,7 @@ Route::get('/class-room/image', [ClassRoomController::class, 'getImageRoom']);
 Route::get('/facility-landingpage', [ClassRoomController::class, 'getFacilityLandingPage']);
 Route::get('/number-room', [RoomController::class, 'getNumberRoomWithFloor']);
 Route::get('/testimonial', [TestimonialController::class, 'getTestimonial']);
+Route::get('/testimonial-random', [TestimonialController::class, 'getTestimonialRandom']);
 Route::get('/statistic-by-classroom', [StatisticReviewController::class, 'getStatisticReviewByClassRoomId']);
 
 Route::middleware('auth:sanctum')->group( function () {
