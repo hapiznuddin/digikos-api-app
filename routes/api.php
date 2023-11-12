@@ -7,6 +7,7 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\OccupantController;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\StatisticReviewController;
@@ -73,7 +74,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/rent-history-roomid', [RentController::class, 'getRentHistoryByRoomId']);
     Route::get('/rentByUserId', [RentController::class, 'getRentByUserId']);
 
-    
     Route::post('/rent-approval/admin', [RentController::class, 'approvalRent']);
     Route::post('/rent-approval/check-in', [RentController::class, 'approvalCheckIn']);
     
@@ -82,8 +82,12 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/webhook-payment', [PaymentController::class, 'webhookPayment']);
     Route::get('/payment-history', [PaymentController::class, 'getHistoryPayment']);
     
-    
+    // ** Route Testimonial
     Route::post('/testimonial', [TestimonialController::class, 'createTestimonial']);
+
+    // ** Route Pengeluaran
+    Route::post('/expense', [ExpenseController::class, 'createExpense']);
+    Route::get('/expense', [ExpenseController::class, 'getExpense']);
 
     
 });
