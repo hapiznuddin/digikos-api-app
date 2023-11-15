@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\OcCitizenshipDocController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -88,6 +89,8 @@ Route::middleware('auth:sanctum')->group( function () {
     // ** Route Pengeluaran
     Route::post('/expense', [ExpenseController::class, 'createExpense']);
     Route::get('/expense', [ExpenseController::class, 'getExpense']);
+
+    Route::get('/report', [ReportController::class, 'getReport']);
 
     
 });
