@@ -80,4 +80,42 @@ class AuthController extends Controller
   ];
     return response()->json($data, 200);
   }
+
+  public function editPassword(Request $request)
+  {
+    $userId = Auth::user()->id;
+
+    $request->validate([
+      'password' => 'required|string|min:8',
+    ]); 
+
+    $user = User::whereId($userId)->first();
+    if (!$user) return response()->json(['message' => 'user tidak ditemukan'], 404);
+
+    $user->update([
+      'password' => Hash::make($request->password)
+    ]);
+
+    return response()->json([
+      'message' => 'Berhasil mengubah password',
+    ], 200);
+  }
+
+  public function resetPassword(Request $request)
+{
+    $request->validate([
+      'user_id' => 'required|string',
+    ]);
+
+    $user = User::whereId($request->user_id)->first();
+        if (!$user) return response()->json(['message' => 'user tidak ditemukan'], 404);
+
+        $user->update([
+            'password' => Hash::make('12345678')
+        ]);
+
+    return response()->json([
+        'message' => 'Berhasil mereset password',
+    ], 200);
+}
 }

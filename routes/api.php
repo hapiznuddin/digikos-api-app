@@ -13,6 +13,7 @@ use App\Http\Controllers\OccupantController;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\StatisticReviewController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\UserController;
 
 //* Route Auth
 Route::post('/register', [AuthController::class, 'register']);
@@ -30,6 +31,9 @@ Route::get('/statistic-by-classroom', [StatisticReviewController::class, 'getSta
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('/user', [AuthController::class, 'getUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+    Route::post('/edit-password', [AuthController::class, 'editPassword']);
+
     
     //* Route Occupants
     Route::get('/occupant', [OccupantController::class, 'getOccupantDetail']);
@@ -90,7 +94,13 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/expense', [ExpenseController::class, 'createExpense']);
     Route::get('/expense', [ExpenseController::class, 'getExpense']);
 
+    // ** Route Laporan
     Route::get('/report', [ReportController::class, 'getReport']);
+
+    // ** Route Management User
+    Route::get('/management-user', [UserController::class, 'getAllUser']);
+    Route::put('/management-user/promote', [UserController::class, 'promoteAdmin']);
+    Route::delete('/management-user/delete', [UserController::class, 'deleteUser']);
 
     
 });
