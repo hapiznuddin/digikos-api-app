@@ -8,6 +8,7 @@ use App\Http\Controllers\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ComplaintMessageController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\OccupantController;
 use App\Http\Controllers\RentController;
@@ -101,6 +102,13 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/management-user', [UserController::class, 'getAllUser']);
     Route::put('/management-user/promote', [UserController::class, 'promoteAdmin']);
     Route::delete('/management-user/delete', [UserController::class, 'deleteUser']);
+
+    // ** Route Complaint Message
+    Route::post('/user/message', [ComplaintMessageController::class, 'createMessage']);
+    Route::get('/user/message', [ComplaintMessageController::class, 'getMessageByUser']);
+    Route::get('/admin/message', [ComplaintMessageController::class, 'getMessageByAdmin']);
+    Route::get('/admin/message/detail', [ComplaintMessageController::class, 'getDetailMessage']);
+    Route::post('/admin/message/approve', [ComplaintMessageController::class, 'approveMessage']);
 
     
 });

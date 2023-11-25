@@ -37,4 +37,9 @@ class Rent extends Model
     {
         return $this->hasMany(Testimonial::class, 'rent_id', 'id');
     }
+
+    public function complaintMessage(): HasMany
+    {
+        return $this->hasMany(ComplaintMessage::class, 'rent_id', 'id');
+    }
 }
