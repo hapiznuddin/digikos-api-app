@@ -32,6 +32,9 @@ class PaymentController extends Controller
             'rent_id' => $request->rent_id
         ]);
 
+        $payment->rent->invoice()->update([
+            'status' => 'Pending',
+        ]);
 
         $params = array(
             'transaction_details' => array(
@@ -98,6 +101,10 @@ class PaymentController extends Controller
             $payment->rent->update([
                 'status_id' => 4,
             ]);
+            $payment->rent->invoice()->update([
+                'status' => 'Lunas',
+            ]);
+            
         } else if ($response->transaction_status === 'settlement') {
             $payment->update([
                 'status' => 'Lunas',
@@ -105,6 +112,10 @@ class PaymentController extends Controller
             $payment->rent->update([
                 'status_id' => 4,
             ]);
+            $payment->rent->invoice()->update([
+                'status' => 'Lunas',
+            ]);
+            
         } else if ($response->transaction_status === 'pending') {
             $payment->update([
                 'status' => 'pending',

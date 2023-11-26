@@ -42,4 +42,9 @@ class Rent extends Model
     {
         return $this->hasMany(ComplaintMessage::class, 'rent_id', 'id');
     }
+
+    public function invoice(): HasMany
+    {
+        return $this->hasMany(Invoice::class, 'rent_id', 'id');
+    }
 }

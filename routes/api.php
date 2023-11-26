@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComplaintMessageController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OccupantController;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\StatisticReviewController;
@@ -109,6 +110,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/admin/message', [ComplaintMessageController::class, 'getMessageByAdmin']);
     Route::get('/admin/message/detail', [ComplaintMessageController::class, 'getDetailMessage']);
     Route::post('/admin/message/approve', [ComplaintMessageController::class, 'approveMessage']);
-
+    
+    // ** Route Invoice
+    Route::post('/invoice', [InvoiceController ::class, 'createInvoice']);
+    Route::get('/invoice/status', [InvoiceController ::class, 'getInvoiceByStatus']);
     
 });
