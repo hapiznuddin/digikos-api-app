@@ -1,4 +1,4 @@
-# Digikos Web 
+# Digikos Web API 
 
 This is my personal project to fulfill the assignment of my thesis by using Laravel as a PHP framework. This project is a boarding house management information system website, which consists of a landing page, admin dashboard and user dashboard.
 
