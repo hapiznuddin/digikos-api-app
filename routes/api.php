@@ -114,5 +114,6 @@ Route::middleware('auth:sanctum')->group( function () {
     // ** Route Invoice
     Route::post('/invoice', [InvoiceController ::class, 'createInvoice']);
     Route::get('/invoice/status', [InvoiceController ::class, 'getInvoiceByStatus']);
+    Route::get('/invoice/check', [InvoiceController ::class, 'getCheckInvoice']);
     
 });
