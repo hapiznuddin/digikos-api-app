@@ -77,6 +77,8 @@ class AuthController extends Controller
     $data = [
       'user_id' => $user->id,
       'name' => $user->name,
+      'email' => $user->email,
+      'created_at' => $user->created_at,
   ];
     return response()->json($data, 200);
   }

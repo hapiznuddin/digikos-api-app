@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CheckInvoiceResource;
+use App\Http\Resources\GetAllInvoiceResource;
 use App\Models\Invoice;
 use App\Models\Rent;
 use App\Models\User;
@@ -51,9 +52,13 @@ class InvoiceController extends Controller
     public function getInvoiceByStatus()
     {
         $statuses = ['Belum bayar', 'Pending'];
-        $invoices = Invoice::whereIn('status', $statuses)->get();
+        $invoices = Invoice::with('rent')
+                    ->whereIn('status', $statuses)
+                    ->get();
 
-        return response()->json($invoices, 200);
+        return response()->json(
+            GetAllInvoiceResource::collection($invoices),
+        );
     }
 
     public function getCheckInvoice(Request $request)
