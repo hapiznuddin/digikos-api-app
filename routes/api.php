@@ -83,6 +83,7 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::post('/rent-approval/admin', [RentController::class, 'approvalRent']);
     Route::post('/rent-approval/check-in', [RentController::class, 'approvalCheckIn']);
+    Route::get('/rent/statistic', [RentController::class, 'getStatisticRoom']);
     
     //* Route Payments
     Route::post('/first-payment', [PaymentController::class, 'createPayment']);

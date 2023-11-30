@@ -8,6 +8,8 @@ use App\Http\Resources\DetailRentResource;
 use App\Http\Resources\GetRentHistoryByRoomIdResource;
 use App\Http\Resources\HistoryRentResource;
 use App\Http\Resources\RentResource;
+use App\Models\Occupant;
+use App\Models\Payment;
 use App\Models\Rent;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -116,9 +118,9 @@ class RentController extends Controller
         $room = $rent->room;
         $room->status_room = 'Terisi'; // Perbarui status kamar
         $room->save(); // Simpan perubahan status kamar
-    
+
         $rent->status_id = 5; // Perbarui status sewa
-        $rent->save(); 
+        $rent->save();
 
         return response()->json(['message' => 'Berhasil Check In'], 200);
     }
@@ -178,12 +180,12 @@ class RentController extends Controller
         $request->validate([
             'room_id' => 'required|integer',
         ]);
-    
+
         $rent = Rent::where('room_id', $request->room_id)->first();
         if (!$rent) {
             return response()->json(['message' => 'Rent not found'], 404);
         }
-    
+
         $occupant = $rent->occupant;
         if (!$occupant) {
             return response()->json(['message' => 'Occupant not found'], 404);
@@ -192,7 +194,7 @@ class RentController extends Controller
         $filteredRent = $occupant->rent->filter(function ($item) {
             return $item->status_id == 5;
         });
-    
+
         return GetRentHistoryByRoomIdResource::collection($filteredRent);
     }
 
@@ -207,10 +209,26 @@ class RentController extends Controller
         if (!$rent) {
             return response()->json(['message' => 'Rent not found'], 404);
         }
-        
+
         $rentId = $rent->id;
         $roomName = $rent->room->classRoom->room_name;
-    
+
         return response()->json(['id' => $rentId, 'room_name' => $roomName], 200);
+    }
+
+    public function getStatisticRoom()
+    {
+        $totalRoom = Room::count();
+        $roomAvailable = Room::where('status_room', 'Tidak Terisi')->count();
+        $roomFill = Room::where('status_room', 'Terisi')->count();
+        $totalOccupant = Payment::where('status', 'Lunas')->count();
+
+        $data = [
+            'total_room' => $totalRoom,
+            'room_available' => $roomAvailable,
+            'room_filled' => $roomFill,
+            'total_occupant' => $totalOccupant
+        ];
+        return response()->json($data, 200);
     }
 }
