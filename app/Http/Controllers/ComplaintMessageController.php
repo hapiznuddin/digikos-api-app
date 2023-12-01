@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\GetAllMessageResource;
 use App\Models\ComplaintMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -73,11 +74,27 @@ class ComplaintMessageController extends Controller
         return response()->json($messages, 200);
     }
 
-    public function getMessageByAdmin()
+    public function getMessageByAdmin(Request $request)
     {
-        $messages = ComplaintMessage::paginate(6);
-
-        return response()->json($messages, 200);
+        $request->validate([
+            'filter' => 'nullable|string',
+        ]);
+    
+        $filter = $request->input('filter');
+    
+        $messages = ComplaintMessage::when($filter, function ($query) use ($filter) {
+            return $query->where('status', 'like', '%' . $filter . '%');
+        })->paginate(20);
+    
+        return response()->json([
+            'data' => GetAllMessageResource::collection($messages),
+            'pagination' => [
+                'current_page' => $messages->currentPage(),
+                'last_page' => $messages->lastPage(),
+                'per_page' => $messages->perPage(),
+                'total' => $messages->total(),
+            ],
+        ]);
     }
 
     public function getDetailMessage(Request $request)
