@@ -12,6 +12,7 @@ use App\Models\Occupant;
 use App\Models\Payment;
 use App\Models\Rent;
 use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RentController extends Controller
@@ -171,6 +172,25 @@ class RentController extends Controller
             return response()->json(['message' => 'Rent not found'], 404);
         }
         $rent->load('room.classroom');
+        return new DetailRentResource($rent);
+    }
+
+    public function getDetailRentByUser(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|string',
+        ]);
+        
+        $user = User::find($request->user_id)->occupant()->first();
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        $rent = Rent::where('occupant_id', $user->id)->first();
+        if (!$rent) {
+            return response()->json(['message' => 'Rent not found'], 404);
+        }
+        $rent->load('room.classroom');
+        
         return new DetailRentResource($rent);
     }
 

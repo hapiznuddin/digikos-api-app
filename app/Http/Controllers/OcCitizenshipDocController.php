@@ -36,13 +36,32 @@ class OcCitizenshipDocController extends Controller
     public function getKtp(Request $request)
     {
         $request->validate([
-            'id' => 'required|string',
+            'id' => 'nullable|string',
+            'user_id' => 'nullable|string',
         ]);
-        $ktp = OcCitizenshipDoc::whereOccupantId($request->id)->first();
-        if (!$ktp) {
-            return response()->json(['message' => 'Data KTP tidak ditemukan'], 404);
+
+        $id = $request->input('id');
+        $userId = $request->input('user_id');
+
+        if ($id) {
+            $ktp = OcCitizenshipDoc::where('occupant_id', $id)->first();
+            if (!$ktp) {
+                return response()->json(['message' => 'Data KTP tidak ditemukan'], 404);
+            }
+            return response()->json($ktp, 200);
         }
-        return response()->json($ktp, 200);
+        if ($userId) {
+            $user = User::find($userId)->occupant()->first();
+            if (!$user) {
+                return response()->json(['message' => 'User tidak ditemukan'], 404);
+            }
+            $ktp = OcCitizenshipDoc::where('occupant_id', $user->id)->first();
+            if (!$ktp) {
+                return response()->json(['message' => 'Data KTP tidak ditemukan'], 404);
+            }
+            return response()->json($ktp, 200);
+        }
+        return response()->json(['message' => 'Parameter tidak valid'], 400);
     }
 
 
@@ -67,13 +86,32 @@ class OcCitizenshipDocController extends Controller
     public function getFamilyDoc(Request $request)
     {
         $request->validate([
-            'id' => 'required|string',
+            'id' => 'nullable|string',
+            'user_id' => 'nullable|string',
         ]);
-        $familyDoc = FamilyDoc::whereOccupantId($request->id)->first();
-        if (!$familyDoc) {
-            return response()->json(['message' => 'File KK tidak ditemukan'], 404);
+
+        $id = $request->input('id');
+        $userId = $request->input('user_id');
+
+        if ($id) {
+            $familyDoc = FamilyDoc::where('occupant_id', $id)->first();
+            if (!$familyDoc) {
+                return response()->json(['message' => 'File KK tidak ditemukan'], 404);
+            }
+            return response()->json($familyDoc, 200);
         }
-        return response()->json($familyDoc, 200);
+        if ($userId) {
+            $user = User::find($userId)->occupant()->first();
+            if (!$user) {
+                return response()->json(['message' => 'User tidak ditemukan'], 404);
+            }
+            $familyDoc = FamilyDoc::where('occupant_id', $user->id)->first();
+            if (!$familyDoc) {
+                return response()->json(['message' => 'File KK tidak ditemukan'], 404);
+            }
+            return response()->json($familyDoc, 200);
+        }
+        return response()->json(['message' => 'Parameter tidak valid'], 400);
     }
 
 
