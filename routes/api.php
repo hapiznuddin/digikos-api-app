@@ -78,7 +78,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/rent', [RentController::class, 'getAllRent']);
     Route::get('/rent-history', [RentController::class, 'getHistoryRent']);
     Route::get('/rent/detail', [RentController::class,'getDetailRent']);
-    Route::get('/rent/detail-by-user', [RentController::class,'getDetailRentByUser']);
+    Route::get('/rent/detail/user', [RentController::class,'getDetailRentByUser']);
     Route::get('/rent-history-roomid', [RentController::class, 'getRentHistoryByRoomId']);
     Route::get('/rentByUserId', [RentController::class, 'getRentByUserId']);
 

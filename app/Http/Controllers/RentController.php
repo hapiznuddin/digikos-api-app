@@ -229,11 +229,19 @@ class RentController extends Controller
         if (!$rent) {
             return response()->json(['message' => 'Rent not found'], 404);
         }
+        $status = $rent->invoice()->first()->status;
+        if ($status === 'Lunas') {
+            return response()->json(['message' => 'Tagihan sudah lunas'], 404);
+        }
+        $data = [
+            'rent_id' => $rent->id,
+            'room_id' => $rent->room_id,
+            'price' => $rent->room->room_price,
+            "invoice_id" => $rent->invoice()->first()->id,
+            'invoice_date' => $rent->invoice()->first()->invoice_date
+        ];
 
-        $rentId = $rent->id;
-        $roomName = $rent->room->classRoom->room_name;
-
-        return response()->json(['id' => $rentId, 'room_name' => $roomName], 200);
+        return response()->json($data, 200);
     }
 
     public function getStatisticRoom()

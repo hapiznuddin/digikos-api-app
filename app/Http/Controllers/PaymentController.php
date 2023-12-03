@@ -7,6 +7,7 @@ use App\Models\Occupant;
 use App\Models\Payment;
 use App\Models\Rent;
 use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -139,13 +140,28 @@ class PaymentController extends Controller
     public function getHistoryPayment(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'id' => 'nullable|string',
+            'user_id' => 'nullable|string',
         ]);
 
-        $payment = Payment::where('occupant_id', $request->id)->get();
-        if ($payment->isEmpty()) {
-            return response()->json(['message' => 'Payment not found'], 404);
+        $id = $request->input('id');
+        $userId = $request->input('user_id');
+
+        if ($id) {
+            $payment = Payment::where('occupant_id', $id)->get();
+            if ($payment->isEmpty()) {
+                return response()->json(['message' => 'Payment not found'], 404);
+            }
+            return response()->json($payment, 200);
         }
-        return response()->json($payment, 200);
+
+        if ($userId) {
+            $user = User::find($userId)->occupant()->first();
+            $payment = Payment::where('occupant_id', $user->id)->get();
+            if ($payment->isEmpty()) {
+                return response()->json(['message' => 'Payment not found'], 404);
+            }
+            return response()->json($payment, 200);
+        }
     }
 }
