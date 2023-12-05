@@ -71,7 +71,9 @@ class ComplaintMessageController extends Controller
         }
         $messages = ComplaintMessage::where('rent_id', $rent->id)->get();
 
-        return response()->json($messages, 200);
+        return response()->json([
+            'data' => GetAllMessageResource::collection($messages),
+        ]);
     }
 
     public function getMessageByAdmin(Request $request)
