@@ -85,10 +85,11 @@ class InvoiceController extends Controller
 
         $invoice = Invoice::where('rent_id', $rent->id)
                 ->where('status', 'Belum bayar')
+                ->where('status', 'Pending')
                 ->first();
 
         if (!$invoice) {
-            return response()->json(['message' => 'Invoice not found'], 404);
+            return response()->json(['message' => 'Tagihan sudah lunas'], 404);
         }
 
         return new CheckInvoiceResource($invoice);

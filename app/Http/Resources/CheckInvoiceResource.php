@@ -16,10 +16,12 @@ class CheckInvoiceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'room_name' => $this->rent->room->classRoom->room_name,
-            'number' => $this->rent->room->number_room,
-            'floor' => $this->rent->room->number_floor,
+            'rent_id' => $this->rent_id,
+            'room_id' => $this->rent->room->id,
+            'occupant_id' => $this->rent->occupant->id,
+            'invoice_date' => $this->invoice_date,
             'price' => $this->rent->room->room_price,
+            'status' => $this->status,
         ];
     }
 }
