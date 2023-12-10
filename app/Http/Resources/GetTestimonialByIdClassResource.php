@@ -25,7 +25,7 @@ class GetTestimonialByIdClassResource extends JsonResource
             'review' => $this->review,
             'rating' => $this->rating,
             'created_at' => $this->created_at,
-            'profile_pic' => $this->user->profilePic->path
+            'profile_pic' => $this->user->profilePic->path ?? null
         ];
     }
 }
