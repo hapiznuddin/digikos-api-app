@@ -225,23 +225,12 @@ class RentController extends Controller
         ]);
         $rent = Rent::whereHas('occupant', function ($query) use ($request) {
             $query->where('user_id', $request->user_id);
-        })->first();
+        })->select('id', 'occupant_id', 'room_id', 'status_id')->first();
         if (!$rent) {
             return response()->json(['message' => 'Rent not found'], 404);
         }
-        $status = $rent->invoice()->first()->status;
-        if ($status === 'Lunas') {
-            return response()->json(['message' => 'Tagihan sudah lunas'], 404);
-        }
-        $data = [
-            'rent_id' => $rent->id,
-            'room_id' => $rent->room_id,
-            'price' => $rent->room->room_price,
-            "invoice_id" => $rent->invoice()->first()->id,
-            'invoice_date' => $rent->invoice()->first()->invoice_date
-        ];
 
-        return response()->json($data, 200);
+        return response()->json($rent, 200);
     }
 
     public function getStatisticRoom()
