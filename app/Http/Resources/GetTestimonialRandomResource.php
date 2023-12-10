@@ -20,7 +20,7 @@ class GetTestimonialRandomResource extends JsonResource
             'occupant_id' => $this->rent->occupant->id,
             'name' => $this->rent->occupant->name,
             'review' => $this->review,
-            'profile_pic' => $this->user->profilePic->path
+            'profile_pic' => $this->user->profilePic->path ?? null,
         ];
     }
 }
