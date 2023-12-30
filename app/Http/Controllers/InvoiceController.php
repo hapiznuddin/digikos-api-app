@@ -52,8 +52,12 @@ class InvoiceController extends Controller
     public function getInvoiceByStatus()
     {
         $statuses = ['Belum bayar', 'Pending'];
+        $occupants = Rent::whereNull('occupant_id')->pluck('id');
         $invoices = Invoice::with('rent')
                     ->whereIn('status', $statuses)
+                    ->whereHas('rent', function ($query) use ($occupants) {
+                        $query->whereNotIn('id', $occupants);
+                    })
                     ->get();
 
         return response()->json(
