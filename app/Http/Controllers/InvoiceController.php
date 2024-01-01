@@ -87,9 +87,9 @@ class InvoiceController extends Controller
             return response()->json(['message' => 'Rent not found'], 404);
         }
 
+        $statuses = ['Belum bayar', 'Pending'];
         $invoice = Invoice::where('rent_id', $rent->id)
-                ->where('status', 'Belum bayar')
-                ->where('status', 'Pending')
+                ->whereIn('status', $statuses)
                 ->first();
 
         if (!$invoice) {
