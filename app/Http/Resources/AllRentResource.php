@@ -17,11 +17,11 @@ class AllRentResource extends JsonResource
         return [
             'id' => $this->id,
             'price' => $this->total_price,
-            'occupant_id' => $this->occupant->id,
-            'name' => $this->occupant->name,
-            'phone' => $this->occupant->phone,
-            'address' => $this->occupant->address,
-            'start_date' => $this->start_date,
+            'occupant_id' => $this->occupant->id ?? null,
+            'name' => $this->occupant->name ?? null,
+            'phone' => $this->occupant->phone ?? null,
+            'address' => $this->occupant->address ?? null,
+            'start_date' => $this->start_date ?? null,
             'room_id' => $this->room->id,
             'room' => [
                 'number_room' => $this->room->number_room,

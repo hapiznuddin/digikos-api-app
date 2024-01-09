@@ -99,7 +99,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/expense', [ExpenseController::class, 'getExpense']);
 
     // ** Route Laporan
-    Route::get('/report', [ReportController::class, 'getReport']);
+    Route::get('/report', [ReportController::class, 'getReportPayment']);
 
     // ** Route Management User
     Route::get('/management-user', [UserController::class, 'getAllUser']);

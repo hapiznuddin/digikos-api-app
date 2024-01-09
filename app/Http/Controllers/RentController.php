@@ -120,7 +120,8 @@ class RentController extends Controller
         $room->status_room = 'Terisi'; // Perbarui status kamar
         $room->save(); // Simpan perubahan status kamar
 
-        $rent->status_id = 5; // Perbarui status sewa
+        $rent->status_id = 6; // Perbarui status sewa
+        $rent->status_checkin = 1;
         $rent->save();
 
         return response()->json(['message' => 'Berhasil Check In'], 200);
@@ -238,7 +239,7 @@ class RentController extends Controller
         $totalRoom = Room::count();
         $roomAvailable = Room::where('status_room', 'Tidak Terisi')->count();
         $roomFill = Room::where('status_room', 'Terisi')->count();
-        $totalOccupant = Payment::where('status', 'Lunas')->count();
+        $totalOccupant = Rent::where('status_id', '6')->count();
 
         $data = [
             'total_room' => $totalRoom,
