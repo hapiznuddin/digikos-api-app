@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ReportRentResource;
 use App\Models\Expense;
 use App\Models\Payment;
 use App\Models\Rent;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -68,5 +68,33 @@ class ReportController extends Controller
             ],
             200
         );
+    }
+
+    public function getReportRent(Request $request)
+    {
+        $request->validate([
+            'month' => 'nullable|integer',
+            'year' => 'required|integer',
+        ]);
+
+        $rentQuery = Rent::query()->select('id', 'occupant_id', 'status_checkin', 'room_id', 'start_date', 'status_id', 'updated_at')
+        ->whereYear('rents.updated_at', $request->year)
+        ->when($request->has('month') && $request->month !== null, function ($query) use ($request) {
+            $query->whereMonth('rents.updated_at', $request->month);
+        })
+        ->where('rents.status_checkin', 1)
+        ->get();
+
+        $totalCkeckin = Rent::query()->select('status_checkin')->where('status_checkin', 1)
+        ->whereYear('updated_at', $request->year)
+        ->when($request->has('month') && $request->month !== null, function ($query) use ($request) {
+            $query->whereMonth('rents.updated_at', $request->month);
+        })
+        ->count();
+
+        return response()->json([
+            'total_checkin' => $totalCkeckin,
+            'data' => ReportRentResource::collection($rentQuery),
+        ]);
     }
 }

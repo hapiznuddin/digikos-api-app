@@ -100,6 +100,7 @@ Route::middleware('auth:sanctum')->group( function () {
 
     // ** Route Laporan
     Route::get('/report', [ReportController::class, 'getReportPayment']);
+    Route::get('/report/rent', [ReportController::class, 'getReportRent']);
 
     // ** Route Management User
     Route::get('/management-user', [UserController::class, 'getAllUser']);
