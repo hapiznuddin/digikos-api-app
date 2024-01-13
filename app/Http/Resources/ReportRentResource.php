@@ -20,7 +20,7 @@ class ReportRentResource extends JsonResource
             'room_name' => $this->room->classroom->room_name ?? null,
             'number_room' => $this->room->number_room ?? null,
             'floor' => $this->room->number_floor ?? null,
-            'start_date' => $this->start_date ?? null,
+            'start_date' => $this->updated_at ?? null,
         ];
     }
 }

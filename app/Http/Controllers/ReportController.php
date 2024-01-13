@@ -25,11 +25,10 @@ class ReportController extends Controller
         if ($request->has('month') && $request->month !== null) {
             $incomeQuery->whereYear('created_at', $request->year)->whereMonth('created_at', $request->month);
             $newIncomeQuery->whereYear('updated_at', $request->year)->whereMonth('updated_at', $request->month);
-            $expenseQuery->whereYear('date_paid', $request->year)->whereMonth('date_paid', $request->month);
+            
         } else {
             $incomeQuery->whereYear('created_at', $request->year);
             $newIncomeQuery->whereYear('updated_at', $request->year);
-            $expenseQuery->whereYear('date_paid', $request->year);
         }
 
         $reportIncome = $incomeQuery
@@ -40,23 +39,32 @@ class ReportController extends Controller
 
         $newIncome = $newIncomeQuery ->selectRaw('COUNT(*) as total_pay, SUM(total_payment) as total_payment, MONTHNAME(updated_at) as month_name, YEAR(updated_at) as year')
             ->groupByRaw('YEAR(updated_at), MONTHNAME(updated_at)')
+            ->where('status_id', 6)
             ->get();
 
+            if ($request->has('month') && $request->month !== null) {
+                $expenseQuery->whereYear('date_paid', $request->year)->whereMonth('date_paid', $request->month);
         $reportExpense = $expenseQuery
             ->selectRaw('COUNT(*) as total_expense, SUM(total_payment) as total_price, MONTHNAME(date_paid) as month_name, YEAR(date_paid) as year')
             ->groupByRaw('YEAR(date_paid), MONTHNAME(date_paid)')
             ->get();
+            } else {
+                $expenseQuery->whereYear('date_paid', $request->year);
+                $reportExpense = $expenseQuery
+                ->selectRaw('SUM(total_payment) as total_price, YEAR(date_paid) as year ')
+                ->groupByRaw('YEAR(date_paid)')
+                ->get();
+            }
 
-        $expenseCategory = Expense::whereYear('date_paid', $request->year)->whereMonth('date_paid', $request->month);
-
+        $expenseCategory = Expense::query()
+            ->whereYear('date_paid', $request->year);
+        
         if ($request->has('month') && $request->month !== null) {
-            $expenseCategory->whereYear('date_paid', $request->year)->whereMonth('date_paid', $request->month);
-        } else {
-            $expenseCategory->whereYear('date_paid', $request->year);
+            $expenseCategory->whereMonth('date_paid', $request->month);
         }
-
+        
         $reportExpenseType = $expenseCategory
-            ->select('expense', 'total_payment')
+            ->select('expense', 'total_payment', 'date_paid')
             ->get();
 
         return response()->json(
