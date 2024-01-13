@@ -85,12 +85,12 @@ class ReportController extends Controller
             'year' => 'required|integer',
         ]);
 
-        $rentQuery = Rent::query()->select('id', 'occupant_id', 'status_checkin', 'room_id', 'start_date', 'status_id', 'updated_at')
-        ->whereYear('rents.updated_at', $request->year)
+        $rentQuery = Rent::query()
+        ->whereYear('updated_at', $request->year)
         ->when($request->has('month') && $request->month !== null, function ($query) use ($request) {
-            $query->whereMonth('rents.updated_at', $request->month);
+            $query->whereMonth('updated_at', $request->month);
         })
-        ->where('rents.status_checkin', 1)
+        ->where('status_checkin', 1)
         ->get();
 
         $totalCkeckin = Rent::query()->select('status_checkin')->where('status_checkin', 1)
