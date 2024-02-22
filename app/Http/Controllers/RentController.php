@@ -20,10 +20,10 @@ class RentController extends Controller
     public function createRentStage1(Request $request)
     {
         $request->validate([
-            'start_date' => 'required',
-            'payment_term' => 'required',
-            'total_price' => 'required',
-            'number_room' => 'required',
+            'start_date' => 'required|date',
+            'payment_term' => 'required|string',
+            'total_price' => 'required|integer',
+            'number_room' => 'required|integer',
         ]);
 
         $numberRoom = $request->input('number_room');
@@ -51,7 +51,7 @@ class RentController extends Controller
     public function getRentStage1(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'id' => 'required|integer',
         ]);
         $rent = Rent::find($request->id);
         if (!$rent) {
@@ -240,12 +240,19 @@ class RentController extends Controller
         $roomAvailable = Room::where('status_room', 'Tidak Terisi')->count();
         $roomFill = Room::where('status_room', 'Terisi')->count();
         $totalOccupant = Rent::where('status_id', '6')->count();
+        
+        $totalMonthly = Rent::where('payment_term', 'bulan')->count();
+        $total6Month = Rent::where('payment_term', '6 bulan')->count();
+        $totalYearly = Rent::where('payment_term', 'tahun')->count();
 
         $data = [
             'total_room' => $totalRoom,
             'room_available' => $roomAvailable,
             'room_filled' => $roomFill,
-            'total_occupant' => $totalOccupant
+            'total_occupant' => $totalOccupant,
+            'total_monthly' => $totalMonthly,
+            'total_6_month' => $total6Month,
+            'total_yearly' => $totalYearly
         ];
         return response()->json($data, 200);
     }

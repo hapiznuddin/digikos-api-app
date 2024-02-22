@@ -38,6 +38,7 @@ class DetailRentResource extends JsonResource
                 'size' => $this->room->classroom->room_size,
                 'deposit' => $this->room->classroom->room_deposite
             ],
+            'payment_term' => $this->payment_term,
             'status_id' => $this->statusRent->id,
             'status' => $this->statusRent->status
         ];

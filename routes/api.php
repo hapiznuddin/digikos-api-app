@@ -30,16 +30,16 @@ Route::get('/testimonial', [TestimonialController::class, 'getTestimonial']);
 Route::get('/testimonial-random', [TestimonialController::class, 'getTestimonialRandom']);
 Route::get('/statistic-by-classroom', [StatisticReviewController::class, 'getStatisticReviewByClassRoomId']);
 
-Route::middleware('auth:sanctum')->group( function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'getUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     Route::post('/edit-password', [AuthController::class, 'editPassword']);
 
-    
+
     //* Route Occupants
     Route::get('/occupant', [OccupantController::class, 'getOccupantDetail']);
-    Route::post('/occupant', [OccupantController::class, 'createOccupant']); 
+    Route::post('/occupant', [OccupantController::class, 'createOccupant']);
     Route::put('/occupant', [OccupantController::class, 'updateOccupant']);
 
     //* Route Occupant Files
@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/class-room/image', [ClassRoomController::class, 'createImageRoom']);
     Route::post('/class-room/image/update', [ClassRoomController::class, 'updateImageRoom']);
     Route::delete('/class-room/image', [ClassRoomController::class, 'deleteImageRoom']);
-    
+
     //* Route Rooms
     Route::get('/room/select-class', [RoomController::class, 'getSelectClassroom']);
     Route::get('/room/detail-class', [RoomController::class, 'getDetailClassroom']);
@@ -70,27 +70,27 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::put('/room', [RoomController::class, 'updateRoom']);
     Route::delete('/room', [RoomController::class, 'deleteRoom']);
 
-    
+
     //* Route Rents
     Route::post('/rent-stage-1', [RentController::class, 'createRentStage1']);
     Route::get('/rent-stage-1', [RentController::class, 'getRentStage1']);
     Route::put('/rent-stage-2', [RentController::class, 'updateRentStage2']);
     Route::get('/rent', [RentController::class, 'getAllRent']);
     Route::get('/rent-history', [RentController::class, 'getHistoryRent']);
-    Route::get('/rent/detail', [RentController::class,'getDetailRent']);
-    Route::get('/rent/detail/user', [RentController::class,'getDetailRentByUser']);
+    Route::get('/rent/detail', [RentController::class, 'getDetailRent']);
+    Route::get('/rent/detail/user', [RentController::class, 'getDetailRentByUser']);
     Route::get('/rent-history-roomid', [RentController::class, 'getRentHistoryByRoomId']);
     Route::get('/rentByUserId', [RentController::class, 'getRentByUserId']);
 
     Route::post('/rent-approval/admin', [RentController::class, 'approvalRent']);
     Route::post('/rent-approval/check-in', [RentController::class, 'approvalCheckIn']);
     Route::get('/rent/statistic', [RentController::class, 'getStatisticRoom']);
-    
+
     //* Route Payments
     Route::post('/first-payment', [PaymentController::class, 'createPayment']);
     Route::post('/webhook-payment', [PaymentController::class, 'webhookPayment']);
     Route::get('/payment-history', [PaymentController::class, 'getHistoryPayment']);
-    
+
     // ** Route Testimonial
     Route::post('/testimonial', [TestimonialController::class, 'createTestimonial']);
 
@@ -113,10 +113,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/admin/message', [ComplaintMessageController::class, 'getMessageByAdmin']);
     Route::get('/admin/message/detail', [ComplaintMessageController::class, 'getDetailMessage']);
     Route::post('/admin/message/approve', [ComplaintMessageController::class, 'approveMessage']);
-    
+
     // ** Route Invoice
-    Route::post('/invoice', [InvoiceController ::class, 'createInvoice']);
-    Route::get('/invoice/status', [InvoiceController ::class, 'getInvoiceByStatus']);
-    Route::get('/invoice/check', [InvoiceController ::class, 'getCheckInvoice']);
-    
+    Route::post('/invoice', [InvoiceController::class, 'createInvoice']);
+    Route::get('/invoice/status', [InvoiceController::class, 'getInvoiceByStatus']);
+    Route::get('/invoice/check', [InvoiceController::class, 'getCheckInvoice']);
 });
